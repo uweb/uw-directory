@@ -2,7 +2,7 @@ jQuery(document).ready(function ($) {
     const $grid = $('#directory-container').isotope({
         itemSelector: '.uw-card',
         layoutMode: 'fitRows',
-        fitRows: { gutter: 40 }
+        transitionDuration: '0.4s'
     });
 
     function applySearchFilter() {
@@ -99,6 +99,8 @@ function setViewButton(view) {
         $('#listViewBtn').removeClass('active');
         $('#currentViewLabel').text('GRID VIEW');
         $('#currentViewIcon').attr('class', 'bi bi-grid-3x3-gap-fill');
+
+        $('#directory-container').isotope('layout');
     } else {
         $('#listViewBtn').addClass('active');
         $('#gridViewBtn').removeClass('active');

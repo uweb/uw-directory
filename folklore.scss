@@ -1,4 +1,6 @@
 /*  Main directory wrapper */
+
+/*  Main directory wrapper */
 .uw-directory {
   padding-bottom: 160px;
   position: relative;
@@ -21,7 +23,7 @@
     box-shadow: none;
     border: none;
   }
-  
+
   .label-text {
     flex-grow: 1;
     text-align: left;
@@ -34,7 +36,7 @@
     height: 48px;
     background-color: white;
   }
-  
+
   .arrow-block {
     width: 40px;
     height: 48px;
@@ -46,8 +48,6 @@
     font-size: 16px;
     border-left: none;
   }
-  
-  
 
   .custom-btn:hover .label-text {
     background-color: #4b2e83;
@@ -130,14 +130,15 @@
 /* Layout for filter/search boxes */
 .folklore-container {
   display: flex;
+  flex-wrap: wrap;
   margin: 20px 0;
-  height: 48px;
-  overflow: visible; 
   align-items: center;
 }
 
+
 .folklore-box {
   margin-right: 10px;
+  margin-bottom: 10px;
   height: 100%;
   display: flex;
   align-items: center;
@@ -155,7 +156,17 @@
 .folklore-box.view-toggle {
   flex-grow: 1;
   justify-content: flex-end;
-  margin-right: 0px;;
+  margin-right: 0px;
+}
+@media (max-width: 768px) {
+  .folklore-box {
+    width: 100% !important; 
+    justify-content: flex-start;
+  }
+
+  .folklore-box.view-toggle {
+    justify-content: flex-start; 
+  }
 }
 
 /* Category button styling */
@@ -237,23 +248,27 @@
   }
 }
 
-/* Grid card layout */
+/* Directory container */
 #directory-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
   gap: 20px;
+  justify-content: space-between;
   position: relative;
 }
 
+/* Updated uw-card styling */
 .uw-card {
-  flex: 1 1 calc(50% - 10px);
-  max-width: calc(50% - 10px);
+  position: static !important;
+  flex: 1 1 calc(50% - 20px);
+  max-width: calc(50% - 20px);
+  min-width: 320px;
   height: 255px;
   display: flex;
   background-color: #4b2e83;
   color: white;
-  margin-bottom: 70px;
+  margin: 0;
+  box-sizing: border-box;
 }
 
 .uw-card-img {
@@ -269,7 +284,7 @@
   margin-top: 10px;
   align-items: center;
   justify-content: left;
-  width: calc(600px - 228px - 10px);
+  width: calc(100% - 228px - 40px);
 }
 
 .uw-card-text span h6,
@@ -285,6 +300,27 @@
   font-weight: bold;
 }
 
+/* Responsive fallback */
+@media (max-width: 768px) {
+  .uw-card {
+    flex: 1 1 100%;
+    max-width: 100%;
+    flex-direction: column;
+    height: auto;
+  }
+
+  .uw-card-img {
+    width: 100%;
+    height: auto;
+  }
+
+  .uw-card-text {
+    margin: 20px;
+    width: auto;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
 /* Modal for profile view */
 .uw-modal {
   display: none;
