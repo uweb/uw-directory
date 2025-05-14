@@ -1,0 +1,37 @@
+{
+  "name": "folklore",
+  "version": "1.0.0",
+  "description": "This is a custom WordPress plugin that displays the University of Washington directory using a searchable and filterable interface.",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.27.1",
+    "@babel/preset-env": "^7.27.2",
+    "@babel/register": "^7.27.1",
+    "autoprefixer": "^10.4.21",
+    "browser-sync": "^3.0.4",
+    "css-mqpacker": "^7.0.0",
+    "cssnano": "^7.0.7",
+    "gulp": "^5.0.0",
+    "gulp-autoprefixer": "^7.0.1",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-deporder": "^1.2.0",
+    "gulp-imagemin": "^9.1.0",
+    "gulp-newer": "^1.4.0",
+    "gulp-postcss": "^10.0.0",
+    "gulp-rename": "^2.0.0",
+    "gulp-sass": "^6.0.1",
+    "gulp-sourcemaps": "^3.0.0",
+    "gulp-strip-debug": "^6.0.0",
+    "gulp-uglify": "^3.0.2",
+    "gulp-util": "^3.0.8",
+    "postcss-assets": "^6.0.0",
+    "sass": "^1.88.0"
+  }
+}

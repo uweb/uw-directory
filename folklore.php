@@ -35,7 +35,51 @@ function register_directory_post_type() {
 
     register_post_type( 'directory_entry', $args );
 }
+add_action( 'admin_init', 'uw_directory_check_acf' );
+
+/**
+		 * Check to see if ACF Pro, STM, or ACF is active. If ACF not Pro is active, show error. If none are active, show error.
+		 */
+		 function uw_directory_check_acf() {
+			// list of acceptable plugins to get ACF Pro
+			$all_plugins = [
+				'advanced-custom-fields-pro/acf.php',
+				'uw-storytelling-modules/class-uw-storytelling-modules.php',
+				'uw-storytelling-modules-master/class-uw-storytelling-modules.php',
+				'uw-storytelling-modules-develop/class-uw-storytelling-modules.php',
+				'uw-storytelling-modules-main/class-uw-storytelling-modules.php' // this one may exist in the future if we change from master to main.
+			];
+
+			if ( is_plugin_active( 'advanced-custom-fields/acf.php' ) ) {
+				?>
+				<div class="notice notice-error">
+					<p><?php esc_html_e( "UW Folklore requires Advanced Custom Fields Pro or UW Storytelling Modules. It looks like you're using Advanced Custom Fields (not pro). Please deactivate Advanced Custom Fields and activate Advanced Custom Fields Pro or Storytelling Modules instead.", 'uw-directory' ); ?></p>
+				</div>
+				<?php
+				return;
+			}
+
+			foreach ( $all_plugins as $plugin ) {
+				// if any of these plugins are active, then we are all set.
+				if ( is_plugin_active( $plugin ) ) {
+					// all good to go!
+					return;
+				}
+			}
+
+			// if we get here, we're out of checks and need either ACF Pro or STM activated.
+			?>
+				<div class="notice notice-error">
+					<p><?php esc_html_e( "UW Folklore requires Advanced Custom Fields Pro or UW Storytelling Modules. Please activate Advanced Custom Fields Pro or UW Storytelling Modules.", 'uw-directory' ); ?></p>
+				</div>
+				<?php
+				return;
+		}
+
 add_action( 'init', 'register_directory_post_type' );
+// save and load acf json for this plugin.
+add_filter( 'acf/settings/save_json/key=group_67ae559c84ef4', 'uw_directory_acf_json_save_point'  );
+add_filter( 'acf/settings/load_json','uw_directory_acf_json_load_point');
 
 function uw_directory_enqueue_scripts() {
     // Vendor libs
@@ -47,12 +91,37 @@ function uw_directory_enqueue_scripts() {
     wp_enqueue_style( 'font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css', array(), '6.0.0' );
 
     // Plugin assets
-    wp_enqueue_style( 'uw-directory-style', plugins_url( '/folklore.scss', __FILE__ ) );
+    wp_enqueue_style( 'uw-directory-style', plugins_url( 'folklore.css', __FILE__ ) );
     wp_enqueue_script( 'uw-directory-script', plugins_url( '/script.js', __FILE__ ), array( 'jquery', 'isotope-js' ), null, true );
 }
 add_action( 'wp_enqueue_scripts', 'uw_directory_enqueue_scripts' );
 
+/**
+		 * Use Local JSON to store data for ACF.
+		 * Save point.
+		 */
+		 function uw_directory_acf_json_save_point( $path ) {
+			// update path.
+			$path = plugin_dir_path( __FILE__ ) . '/acf-json';
 
+			// return.
+			return $path;
+		}
+
+		/**
+		 * Use Local JSON to load saved data for ACF.
+		 * Load point.
+		 */
+		 function uw_directory_acf_json_load_point( $paths ) {
+			// remove original path (optional).
+			//unset( $paths[0] );
+
+			// append path.
+			$paths[] = plugin_dir_path( __FILE__ ) . '/acf-json';
+
+			// return.
+			return $paths;
+		}
 
 function uw_directory_shortcode() {
 
