@@ -64,6 +64,8 @@ function uw_directory_shortcode() {
 
     <!-- Filter Box -->
 <div class="folklore-box">
+<div class="folklore-inner">
+<label class="section-label" for="dropdownMenuButton">Categories filter dropdown</label>
   <div class="filter">
     <?php
     $departments = array();
@@ -92,19 +94,23 @@ function uw_directory_shortcode() {
       <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
         <?php foreach ($departments as $dept) :
           $slug = strtolower(str_replace(' ', '-', $dept)); ?>
-          <li>
-            <a class="dropdown-item" href="#" data-value="<?php echo esc_html($dept); ?>" data-filter=".<?php echo esc_attr($slug); ?>">
-              <?php echo esc_html($dept); ?>
-            </a>
-          </li>
+         <li>
+  <a class="dropdown-item" href="#" data-value="<?php echo esc_html($dept); ?>" data-filter=".<?php echo esc_attr($slug); ?>">
+    <?php echo esc_html($dept); ?>
+  </a>
+</li>
         <?php endforeach; ?>
       </ul>
     </div>
+  </div>
   </div>
 </div>
 
 <!-- Search Box -->
 <div class="folklore-box search">
+<div class="folklore-inner">
+<label class="section-label" for="dropdownMenuButton">Search for name, team or role</label>
+
   <section aria-label="Search" style="width: 100%;">
     <form class="searchbox">
       <div>
@@ -113,10 +119,14 @@ function uw_directory_shortcode() {
       </div>
     </form>
   </section>
+
+        </div>
 </div>
 <!-- View Toggle Box -->
 <div class="folklore-box view-toggle">
-    <div class="view-dropdown" style="display:flex; flex-wrap: wrap;">
+    <!-- <label class="section-label toggle-view" for="dropdownMenuButton">Filter</label> -->
+
+    <div class="toggle-view">
         <button class="view-btn tab-view tab-button active" type="button" id="gridViewBtn" data-tab="tab-one" >
             <i class="fa-solid fa-border-all" style="margin-right:10px;"></i> Grid
         </button>
@@ -248,3 +258,12 @@ function uw_directory_shortcode() {
     return ob_get_clean();
 }
 add_shortcode( 'uw_directory', 'uw_directory_shortcode' );
+
+/* add_filter( 'document_title_parts', 'folklore_override_title' );
+function folklore_override_title( $title ) {
+    if ( is_page() && has_shortcode( get_post()->post_content, 'uw_directory' ) ) {
+        $title['title'] = 'Folklore people directory';
+    }
+    return $title;
+}
+ */
