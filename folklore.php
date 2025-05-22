@@ -140,18 +140,26 @@ add_action( 'wp_enqueue_scripts', 'uw_directory_enqueue_scripts' );
 			return $paths;
 		}
 
-function uw_directory_shortcode() {
+    function uw_directory_shortcode() {
+      $post_id     = get_queried_object_id();
+      $sidebar_val = get_post_meta( $post_id, 'sidebar', true );
+      $has_sidebar = empty( $sidebar_val );
+      // DEBUG: output values into your page source
+echo '<!-- sidebar_val="' . esc_html( $sidebar_val ) . '" | has_sidebar=' . ( $has_sidebar ? 'true' : 'false' ) . ' -->';
 
-    /* ---------- Search / Filter / View toggles ---------- */
-    ob_start();
-    ?>
-    <div class="uw-directory">
-    <div class="folklore-container">
+      ob_start();
+      ?>
+<div class="uw-directory<?php echo $has_sidebar ? ' has-sidebar' : ''; ?>">
+<div class="folklore-container">
 
     <!-- Filter Box -->
 <div class="folklore-box">
 <div class="folklore-inner">
-<label class="section-label" for="dropdownMenuButton">Categories filter dropdown</label>
+<label class="section-label" for="dropdownMenuButton">
+  Categories filter dropdown   <br><small style="font-weight: normal; color: #666;">Sorts by department</small>
+
+</label>
+
   <div class="filter">
     <?php
      $terms = get_terms([
@@ -170,12 +178,12 @@ function uw_directory_shortcode() {
 
     <div class="dropdown custom-dropdown">
       <button id="dropdownMenuButton" class="custom-btn" data-bs-toggle="dropdown" aria-expanded="false">
-        <span id="dropdown-label" class="label-text">Categories</span>
+        <span id="dropdown-label" class="label-text">All categories</span>
         <span class="arrow-block">&#9660;</span>
       </button>
       <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
       <li>
-        <a class="dropdown-item" href="#" data-value="All" data-filter="*">All</a>
+        <a class="dropdown-item" href="#" data-value="All categories" data-filter="*">All categories</a>
       </li>
 <?php foreach ( $departments as $slug => $name ) : ?>
       <li>
@@ -198,8 +206,9 @@ function uw_directory_shortcode() {
 <!-- Search Box -->
 <div class="folklore-box search">
 <div class="folklore-inner">
-<label class="section-label" for="dropdownMenuButton">Search for name, team or role</label>
-
+<label class="section-label" for="dropdownMenuButton">
+  Search for name, team or role <br><small style="font-weight: normal; color: #666;">Results will update as you type</small>
+</label>
   <section aria-label="Search" style="width: 100%;">
     <form class="searchbox">
       <div>
@@ -231,8 +240,7 @@ function uw_directory_shortcode() {
 
         <?php
         /* ----------  Tabs ---------- */
-        echo '<div id="tab-one" class="tab-content" style="display:block;"><div id="directory-container">';
-
+        echo '<div id="tab-one" class="tab-content" style="display:block;"><div id="directory-container" aria-live="polite" aria-atomic="true">';
         $query       = new WP_Query( array(
             'post_type'      => 'directory_entry',
             'posts_per_page' => -1,
@@ -292,13 +300,20 @@ function uw_directory_shortcode() {
                 <?php
                 /* ----- List View  ----- */
                 $table_rows .= sprintf(
-                    '<tr class="open-profile-modal" data-name="%1$s" data-title="%2$s" data-email="%3$s" data-department="%4$s" data-bio="%5$s" data-img="%6$s" data-department-slug="%7$s">
-                        <td><img src="%6$s" alt="Profile"></td>
-                        <td><strong>%1$s</strong></td>
-                        <td>%2$s</td>
-                        <td>%4$s</td>
-                        <td><a href="mailto:%3$s">%3$s</a></td>
-                    </tr>',
+                  '<tr class="open-profile-modal" role="button" tabindex="0" aria-label="View %1$s’s profile" 
+                       data-name="%1$s" 
+                       data-title="%2$s" 
+                       data-email="%3$s" 
+                       data-department="%4$s" 
+                       data-bio="%5$s" 
+                       data-img="%6$s" 
+                       data-department-slug="%7$s">
+                      <td><img src="%6$s" alt="Profile of %1$s"></td>
+                      <td><strong>%1$s</strong></td>
+                      <td>%2$s</td>
+                      <td>%4$s</td>
+                      <td><a href="mailto:%3$s">%3$s</a></td>
+                  </tr>',
                     esc_attr( "$first $last" ),
                     esc_attr( $title ),
                     esc_attr( $email ),
@@ -316,9 +331,12 @@ function uw_directory_shortcode() {
         ?>
         <div id="tab-two" class="tab-content" style="display:none;">
             <div id="directory-table-wrapper">
-                <table class="directory-table">
+            <label class="section-label">Click a row to view the full profile</label>
+
+                <table class="directory-table" >
+                <caption class="screen-reader-text">Click a row to view the full profile</caption>
                     <thead>
-                        <tr>
+                        <tr role="button">
                             <th></th>
                             <th>Name</th>
                             <th>Role</th>
@@ -326,8 +344,8 @@ function uw_directory_shortcode() {
                             <th>Email</th>
                         </tr>
                     </thead>
-                    <tbody><?php echo $table_rows; ?></tbody>
-                </table>
+                    <tbody aria-live="polite" aria-atomic="false"><?php echo $table_rows; ?></tbody>
+                  </table>
             </div>
         </div>
         <div id="no-results-message" style="display:none; text-align:center; margin:2rem 0;">
@@ -337,7 +355,15 @@ function uw_directory_shortcode() {
         <!-- Bio modal -->
         <div id="profile-modal" class="uw-modal" style="display:none;">
             <div class="uw-modal-content">
-                <span class="uw-modal-close">&times;</span>
+                <!-- <span class="uw-modal-close">&times;</span> -->
+              <button
+                  type="button"
+                  class="uw-modal-close"
+                  role="button"
+                  tabindex="0"
+                  aria-label="Close profile modal">
+                &times;
+              </button>
                 <div class="uw-modal-flex">
                     <div class="uw-modal-img-col">
                         <img id="modal-img" src="" alt="Profile Image"/>

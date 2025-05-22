@@ -6,7 +6,7 @@
   background: white;
   .section-label {
     display: block;
-    margin-bottom: 4px;
+    margin-bottom: 0px;
     font-weight: 600;
     font-size: 15px;
     color: #4b2e83;
@@ -121,6 +121,7 @@
 .toggle-view{
   display: flex;
   justify-content: flex-end;
+  margin-top: 67px;
 
   width: 100%;
 }
@@ -411,12 +412,16 @@
 
 .uw-modal-close {
   position: absolute;
-  top: 20px;
+  top: 5px;
   right: 30px;
-  font-size: 32px;
+  
   font-weight: bold;
   color: #666;
   cursor: pointer;
+  height:53px;
+  background: #fff;    
+  border: 0px solid #ccc;
+  border-radius: 4px; 
 }
 
 .uw-modal-flex {
@@ -518,4 +523,23 @@
       background-color: #ece6f0;
     }
   }
+ 
+
+}
+.uw-directory.has-sidebar {
+  #directory-container {
+    display: flex !important;
+    flex-wrap: wrap !important;
+  }
+  .uw-card {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+    margin-bottom: 1rem !important;
+  }
+}
+.uw-directory.has-sidebar {
+  .folklore-box.search {
+    width: 300px;
+  }
+  
 }

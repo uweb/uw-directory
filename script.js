@@ -85,12 +85,20 @@ jQuery(document).ready(function ($) {
         $('#modal-connect-header').text(`Connect with ${$(this).data('name')}`);
         $('#modal-links').text(   'LinkedIn/Calendly/etc');
         $('#modal-img').attr('src', $(this).data('img'));
-        $('#profile-modal').fadeIn();
+        $('#profile-modal').fadeIn(function(){
+            $(this).find('.uw-modal-close').focus();
+          });
+        
     });
     $(document).on('click', '.uw-modal-close', function () {
         $('#profile-modal').fadeOut();
     });
-
+    $(document).on('keydown', '.open-profile-modal', function(e){
+        if (e.key === 'Enter' || e.keyCode === 13) {
+          e.preventDefault();
+          $(this).trigger('click');
+        }
+      });
     switchToTab('tab-one');
     setViewButton('grid');
 
@@ -104,7 +112,12 @@ jQuery(document).ready(function ($) {
         setViewButton('list');
     });
 });
-
+$(document).on('keydown', '#profile-modal', function(e){
+    if (e.key === 'Tab' || e.keyCode === 9) {
+      e.preventDefault();
+      $(this).find('.uw-modal-close').focus();
+    }
+  });
 function switchToTab(tabId) {
     $('.tab-button').removeClass('active');
     $('.tab-content').hide();
@@ -120,17 +133,26 @@ function switchToTab(tabId) {
 }
 
 function setViewButton(view) {
+    const $container = $('#directory-container');
+    const $tableBody = $('#directory-table-wrapper tbody');
+
     if (view === 'grid') {
         $('#gridViewBtn').addClass('active');
         $('#listViewBtn').removeClass('active');
         $('#currentViewLabel').text('GRID VIEW');
         $('#currentViewIcon').attr('class', 'bi bi-grid-3x3-gap-fill');
 
-        $('#directory-container').isotope('layout');
+        $container.attr('aria-atomic', 'true');
+        $tableBody.attr('aria-atomic', 'false');
+
+        $container.isotope('layout');
     } else {
         $('#listViewBtn').addClass('active');
         $('#gridViewBtn').removeClass('active');
         $('#currentViewLabel').text('LIST VIEW');
         $('#currentViewIcon').attr('class', 'bi bi-list');
+
+        $container.attr('aria-atomic', 'false');
+        $tableBody.attr('aria-atomic', 'true');
     }
 }
