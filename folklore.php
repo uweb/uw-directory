@@ -36,6 +36,23 @@ function register_directory_post_type() {
     register_post_type( 'directory_entry', $args );
 }
 add_action( 'admin_init', 'uw_directory_check_acf' );
+add_action( 'init', 'uw_register_department_taxonomy', 0 );
+function uw_register_department_taxonomy() {
+  register_taxonomy( 'department', 
+    [ 'directory_entry' ],    
+    [
+      'labels'            => [
+        'name'          => 'Departments',
+        'singular_name' => 'Department',
+      ],
+      'hierarchical'      => true,    
+      'show_ui'           => true,    
+      'show_admin_column' => true,   
+      'show_in_rest'      => true,    
+      'rewrite'           => [ 'slug' => 'department' ],
+    ]
+  );
+}
 
 /**
 		 * Check to see if ACF Pro, STM, or ACF is active. If ACF not Pro is active, show error. If none are active, show error.
@@ -137,22 +154,18 @@ function uw_directory_shortcode() {
 <label class="section-label" for="dropdownMenuButton">Categories filter dropdown</label>
   <div class="filter">
     <?php
-    $departments = array();
-    $query = new WP_Query(array(
-      'post_type' => 'directory_entry',
-      'posts_per_page' => -1,
-    ));
-
-    if ($query->have_posts()) :
-      while ($query->have_posts()) :
-        $query->the_post();
-        $dept = get_field('department');
-        if ($dept && !in_array($dept, $departments, true)) {
-          $departments[] = trim($dept);
+     $terms = get_terms([
+        'taxonomy'   => 'department',
+        'hide_empty' => true,
+      ]);
+  
+      $departments = [];
+      if ( ! is_wp_error($terms) ) {
+        foreach ( $terms as $term ) {
+          $departments[ $term->slug ] = $term->name;
         }
-      endwhile;
-      wp_reset_postdata();
-    endif;
+      }
+  
     ?>
 
     <div class="dropdown custom-dropdown">
@@ -161,13 +174,20 @@ function uw_directory_shortcode() {
         <span class="arrow-block">&#9660;</span>
       </button>
       <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
-        <?php foreach ($departments as $dept) :
-          $slug = strtolower(str_replace(' ', '-', $dept)); ?>
-         <li>
-  <a class="dropdown-item" href="#" data-value="<?php echo esc_html($dept); ?>" data-filter=".<?php echo esc_attr($slug); ?>">
-    <?php echo esc_html($dept); ?>
-  </a>
-</li>
+      <li>
+        <a class="dropdown-item" href="#" data-value="All" data-filter="*">All</a>
+      </li>
+<?php foreach ( $departments as $slug => $name ) : ?>
+      <li>
+        <a
+          class="dropdown-item"
+          href="#"
+          data-value="<?php echo esc_attr( $name ); ?>"
+          data-filter=".<?php echo esc_attr( $slug ); ?>"
+        >
+          <?php echo esc_html( $name ); ?>
+        </a>
+      </li>
         <?php endforeach; ?>
       </ul>
     </div>
@@ -227,18 +247,29 @@ function uw_directory_shortcode() {
                 $last   = get_field( 'last_name' );
                 $email  = get_field( 'email' );
                 $pic    = get_field( 'image' );
-                $dept   = get_field( 'department' );
+                $default_img = plugins_url( 'assets/dubs.jpg', __FILE__ );
+                $terms = get_the_terms( get_the_ID(), 'department' );
+                if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
+                    $term   = array_shift( $terms );
+                    $dept   = $term->name;
+                    $d_slug = $term->slug;
+                } else {
+                    $dept   = '';
+                    $d_slug = '';
+                }
+                                
                 $title  = get_field( 'title' );
                 $bio    = get_field( 'bio' );
-                $d_slug = strtolower( str_replace( ' ', '-', $dept ) );
-
+                $img_url = ( $pic && ! empty( $pic['url'] ) )
+                ? esc_url( $pic['url'] )
+                : esc_url( $default_img );
                 /* ----- Grid Tab ----- */
                 ?>
                 <div class="uw-card <?php echo esc_attr( $d_slug ); ?>"
                      data-name="<?php echo esc_attr( "$first $last" ); ?>"
                      data-email="<?php echo esc_attr( $email ); ?>"
                      data-department="<?php echo esc_attr( $d_slug ); ?>">
-                    <img src="<?php echo esc_url( $pic['url'] ); ?>" alt="Profile Image" class="uw-card-img"/>
+                     <img src="<?php echo $img_url; ?>" alt="Profile Image" class="uw-card-img"/>
                     <div class="uw-card-text"><span>
                         <h6 style="font-weight:bold;"><?php echo esc_html( "$first $last" ); ?></h6>
                         <div class="udub-slant-divider white"><span></span></div>
@@ -252,7 +283,7 @@ function uw_directory_shortcode() {
                                     data-department="<?php echo esc_attr( $dept ); ?>"
                                     data-email="<?php echo esc_attr( $email ); ?>"
                                     data-bio="<?php echo esc_attr( $bio ); ?>"
-                                    data-img="<?php echo esc_url( $pic['url'] ); ?>">
+                                    data-img="<?php echo $img_url; ?>">
                                 <span>View Profile</span>
                             </button>
                         </p>
@@ -273,7 +304,7 @@ function uw_directory_shortcode() {
                     esc_attr( $email ),
                     esc_attr( $dept ),
                     esc_attr( $bio ),
-                    esc_url( $pic['url'] ),
+                    esc_url( $img_url ),
                     esc_attr( $d_slug )
                 );
             endwhile;
@@ -298,6 +329,9 @@ function uw_directory_shortcode() {
                     <tbody><?php echo $table_rows; ?></tbody>
                 </table>
             </div>
+        </div>
+        <div id="no-results-message" style="display:none; text-align:center; margin:2rem 0;">
+            <p>No results found.</p>
         </div>
 
         <!-- Bio modal -->

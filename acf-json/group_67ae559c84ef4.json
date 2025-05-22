@@ -8,7 +8,7 @@
             "name": "image",
             "aria-label": "",
             "type": "image",
-            "instructions": "",
+            "instructions": "Suggested image size- 540px x 360px",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -111,7 +111,7 @@
             "label": "Department",
             "name": "department",
             "aria-label": "",
-            "type": "text",
+            "type": "taxonomy",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -120,11 +120,16 @@
                 "class": "",
                 "id": ""
             },
-            "default_value": "",
-            "maxlength": "",
-            "placeholder": "",
-            "prepend": "",
-            "append": ""
+            "taxonomy": "department",
+            "add_term": 1,
+            "save_terms": 0,
+            "load_terms": 0,
+            "return_format": "id",
+            "field_type": "select",
+            "allow_null": 0,
+            "bidirectional": 0,
+            "multiple": 0,
+            "bidirectional_target": []
         },
         {
             "key": "field_67b6675fe3297",
@@ -184,5 +189,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1747257615
+    "modified": 1747904231
 }

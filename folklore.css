@@ -1,5 +1,4 @@
 /*  Main directory wrapper */
-/*  Main directory wrapper */
 .uw-directory {
   padding-bottom: 160px;
   position: relative;
@@ -42,7 +41,7 @@
   background-color: white;
 }
 .uw-directory .arrow-block {
-  width: 40px;
+  width: 49px;
   height: 48px;
   display: flex;
   align-items: center;
