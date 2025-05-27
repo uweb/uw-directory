@@ -121,8 +121,6 @@
 .toggle-view{
   display: flex;
   justify-content: flex-end;
-  margin-top: 67px;
-
   width: 100%;
 }
   .toggle-view .dropdown-menu {
@@ -353,7 +351,7 @@
   width: calc(100% - 228px - 40px);
 }
 
-.uw-card-text span h6,
+.uw-card-text span h3,
 .uw-card-text p {
   color: white;
   font-size: 16px;
@@ -361,7 +359,7 @@
   padding: 2px 0;
 }
 
-.uw-card-text span h6 {
+.uw-card-text span h3 {
   font-size: 24px;
   font-weight: bold;
 }
@@ -444,7 +442,7 @@
   padding: 25px;
 }
 
-.uw-modal-text-col h2 {
+.uw-modal-text-col h4 {
   margin-bottom: 0;
   font-size: 24px;
   font-weight: bold;
@@ -460,16 +458,20 @@
 .bold {
   font-weight: bold;
   font-size: 16px;
+  color: #000;
 }
 
 .light-text {
   color: #000;
-  font-size: 14px;
+  font-size: 16px;
+  font-weight: 400;
+  margin: 3px 0;
 }
 
 .uw-modal-footer {
   background-color: #eee7d9;
   padding: 20px;
+  margin: 3px 0;
 }
 
 .uw-modal-footer h4,
@@ -478,7 +480,12 @@
   font-weight: bold;
   margin: 0 0 10px;
 }
-
+#modal-bio{
+  font-size:16px;
+  font-weight:400;
+  color: black;
+  
+}
 /* Table list view styling */
 .directory-table {
   width: 100%;
