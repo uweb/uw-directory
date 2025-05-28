@@ -204,7 +204,7 @@ function uw_directory_shortcode()
 <div class="folklore-box">
 <div class="folklore-inner">
 <h2 class="section-label" for="dropdownMenuButton">
-  Categories filter dropdown  <br><small style="font-weight: normal; color: #666;">Sorts by department</small>
+  Categories filter dropdown  <br><small>Sorts by department</small>
 
 </h2>
 
@@ -254,7 +254,7 @@ function uw_directory_shortcode()
 <div class="folklore-box search">
 <div class="folklore-inner">
 <h2 class="section-label" for="dropdownMenuButton">
-  Search for name, team or role <br><small style="font-weight: normal; color: #666;">Results will update as you type</small>
+  Search for name, team or role <br><small>Results will update as you type</small>
 </h2>
   <section aria-label="Search" style="width: 100%;">
     <form class="searchbox">
@@ -269,16 +269,15 @@ function uw_directory_shortcode()
 </div>
 <!-- View Toggle Box -->
 <div class="folklore-box view-toggle">
-    <!-- <label class="section-label toggle-view" for="dropdownMenuButton">Filter</label> -->
     <h2 class="section-label" for="dropdownMenuButton">
-   <br><small style="font-weight: normal; color: #666;"></small>
+   <br><small ></small>
 </h2>
     <div class="toggle-view">
         <button class="view-btn tab-view tab-button active" type="button" id="gridViewBtn" data-tab="tab-one" >
-            <i class="fa-solid fa-border-all" style="margin-right:10px;"></i> Grid
+            <i class="fa-solid fa-border-all" ></i> Grid
         </button>
         <button class="view-btn tab-view tab-button" type="button" id="listViewBtn" data-tab="tab-two">
-       <i class="fa-solid fa-table-list" style="margin-right:10px;"></i>List
+       <i class="fa-solid fa-table-list"></i>List
         </button>
     </div>
 </div>
@@ -289,7 +288,7 @@ function uw_directory_shortcode()
 
         <?php
         /* ----------  Tabs ---------- */
-        echo '<div id="tab-one" class="tab-content" style="display:block;"><div id="directory-container" aria-live="polite" aria-atomic="true">';
+        echo '<div id="tab-one" class="tab-content" style="display:block;><div id="directory-container" aria-live="polite" aria-atomic="true">';
         $query = new WP_Query([
             "post_type" => "directory_entry",
             "posts_per_page" => -1,
@@ -331,17 +330,17 @@ function uw_directory_shortcode()
                      data-department="<?php echo esc_attr($d_slug); ?>">
                      <img src="<?php echo $img_url; ?>" alt="Profile Image" class="uw-card-img"/>
                     <div class="uw-card-text"><span>
-                        <h3 style="font-weight:bold;"><?php echo esc_html(
+                        <h3 class="flname"><?php echo esc_html(
                             "$first $last"
                         ); ?></h3>
                         <div class="udub-slant-divider white"><span></span></div>
-                        <h4 style="color:white;font-weight:bold;font-size:16px;"><?php echo esc_html(
+                        <h4 class="title"><?php echo esc_html(
                             $title
                         ); ?></p>
-                        <h4 style="color:white;font-size:16px;"><?php echo esc_html(
+                        <h4 class="department"><?php echo esc_html(
                             $dept
                         ); ?></p>
-                        <h4 style="color:white;font-weight:bold;font-size:16px;"><?php echo esc_html(
+                        <h4 class="email"><?php echo esc_html(
                             $email
                         ); ?></p>
                         <p class="button">
@@ -410,7 +409,7 @@ function uw_directory_shortcode()
                   </table>
             </div>
         </div>
-        <div id="no-results-message" style="display:none; text-align:center; margin:2rem 0;">
+        <div id="no-results-message" >
             <p>No results found.</p>
         </div>
 
