@@ -5,7 +5,7 @@ jQuery(document).ready(function ($) {
         transitionDuration: '0.4s'
     });
 
-    /**
+  /**
      * Show/hide “No results found.”
      * @param {number} gridMatches
      * @param {number} tableMatches
@@ -18,17 +18,13 @@ jQuery(document).ready(function ($) {
         }
     }
 
-    // Listen for when isotope has finished filtering/layout
     $grid.on('arrangeComplete', function(event, filteredItems) {
         const gridMatches  = filteredItems.length;
         const tableMatches = $('#directory-table-wrapper tbody tr:visible').length;
         updateNoResults(gridMatches, tableMatches);
     });
 
-    /**
-     * Apply the search filter to both grid & table.
-     */
-    function applySearchFilter() {
+     function applySearchFilter() {
         const searchText = $('#s').val().toLowerCase();
 
         //filter  table
@@ -41,8 +37,6 @@ jQuery(document).ready(function ($) {
                        || dept.includes(searchText);
             $(this).toggle(match);
         });
-
-        // trigger isotope filter
         $grid.isotope({
             filter: function () {
                 const name  = $(this).data('name')?.toLowerCase()       || '';
@@ -56,26 +50,45 @@ jQuery(document).ready(function ($) {
     }
 
     $('#s').on('keyup', applySearchFilter);
-    $('#searchsubmit').on('click', function (e) {
+    $('#searchsubmit').on('click', function(e) {
         e.preventDefault();
         applySearchFilter();
     });
 
-    $('.dropdown-menu .dropdown-item').on('click', function (e) {
+    // helper to hide the current dropdown option
+    function hideDropdownOption(filterValue) {
+        const $lis = $('.custom-dropdown .dropdown-menu li');
+        $lis.show();
+        $lis.filter(function() {
+            return $(this).find('.dropdown-item').data('filter') === filterValue;
+        }).hide();
+    }
+
+    // dropdown: filter 
+    $('.custom-dropdown .dropdown-menu').on('click', '.dropdown-item', function(e) {
         e.preventDefault();
         const filterValue = $(this).data('filter');
-        $('#dropdown-label').text($(this).data('value'));
+        const labelText   = $(this).data('value');
 
+        // update label
+        $('#dropdown-label').text(labelText);
+
+        // table filter
         $('#directory-table-wrapper tbody tr').each(function () {
             const rowDept = $(this).data('department-slug');
             const show   = filterValue === '*' || rowDept === filterValue.substring(1);
             $(this).toggle(show);
         });
 
+        // isotope filter
         $grid.isotope({ filter: filterValue });
+
+        hideDropdownOption(filterValue);
+
+        $('#dropdownMenuButton').dropdown('toggle');
     });
 
-    // modal handlers 
+    // modal handlers
     $(document).on('click', '.open-profile-modal', function () {
         $('#modal-name').text(    $(this).data('name'));
         $('#modal-title').text(   $(this).data('title'));
@@ -87,20 +100,22 @@ jQuery(document).ready(function ($) {
         $('#modal-img').attr('src', $(this).data('img'));
         $('#profile-modal').fadeIn(function(){
             $(this).find('.uw-modal-close').focus();
-          });
-        
+        });
     });
+
     $(document).on('click', '.uw-modal-close', function () {
         $('#profile-modal').fadeOut();
     });
-    $(document).on('keydown', '.open-profile-modal', function(e){
+
+    $(document).on('keydown', '.open-profile-modal', function(e) {
         if (e.key === 'Enter' || e.keyCode === 13) {
-          e.preventDefault();
-          $(this).trigger('click');
+            e.preventDefault();
+            $(this).click();
         }
-      });
+    });
     switchToTab('tab-one');
     setViewButton('grid');
+    hideDropdownOption('*');
 
     $('#gridViewBtn').on('click', function () {
         switchToTab('tab-one');
@@ -112,12 +127,13 @@ jQuery(document).ready(function ($) {
         setViewButton('list');
     });
 });
-$(document).on('keydown', '#profile-modal', function(e){
+// keep focus in modal
+$(document).on('keydown', '#profile-modal', function(e) {
     if (e.key === 'Tab' || e.keyCode === 9) {
-      e.preventDefault();
-      $(this).find('.uw-modal-close').focus();
+        e.preventDefault();
+        $(this).find('.uw-modal-close').focus();
     }
-  });
+});
 function switchToTab(tabId) {
     $('.tab-button').removeClass('active');
     $('.tab-content').hide();
