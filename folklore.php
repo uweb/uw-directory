@@ -288,7 +288,7 @@ function uw_directory_shortcode()
 
         <?php
         /* ----------  Tabs ---------- */
-        echo '<div id="tab-one" class="tab-content" style="display:block;><div id="directory-container" aria-live="polite" aria-atomic="true">';
+        echo '<div id="tab-one" class="tab-content" style="display:block;"><div id="directory-container" aria-live="polite" aria-atomic="true">';
         $query = new WP_Query([
             "post_type" => "directory_entry",
             "posts_per_page" => -1,
@@ -409,7 +409,7 @@ function uw_directory_shortcode()
                   </table>
             </div>
         </div>
-        <div id="no-results-message" >
+        <div id="no-results-message" style="display:none; text-align:center; margin:2rem 0;">
             <p>No results found.</p>
         </div>
 
