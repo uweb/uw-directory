@@ -232,18 +232,9 @@ function uw_directory_shortcode()
       <li>
         <a class="dropdown-item" href="#" data-value="All categories" data-filter="*">All categories</a>
       </li>
-<?php foreach ($departments as $slug => $name): ?>
-      <li>
-        <a
-          class="dropdown-item"
-          href="#"
-          data-value="<?php echo esc_attr($name); ?>"
-          data-filter=".<?php echo esc_attr($slug); ?>"
-        >
-          <?php echo esc_html($name); ?>
-        </a>
-      </li>
-        <?php endforeach; ?>
+      <?php foreach ($departments as $slug => $name): ?>
+  <li><a class="dropdown-item" href="#" data-value="<?php echo esc_attr($name); ?>" data-filter=".<?php echo esc_attr($slug); ?>"><?php echo esc_html($name); ?></a></li>
+<?php endforeach; ?>
       </ul>
     </div>
   </div>
