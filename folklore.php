@@ -50,6 +50,7 @@ function uw_register_department_taxonomy()
             ],
             "hierarchical" => true,
             "show_ui" => true,
+            "meta_box_cb" => false,
             "show_admin_column" => true,
             "show_in_rest" => true,
             "rewrite" => ["slug" => "department"],

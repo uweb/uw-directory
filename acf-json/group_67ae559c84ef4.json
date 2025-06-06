@@ -122,7 +122,7 @@
             },
             "taxonomy": "department",
             "add_term": 1,
-            "save_terms": 0,
+            "save_terms": 1,
             "load_terms": 0,
             "return_format": "id",
             "field_type": "select",
@@ -189,5 +189,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1747904231
+    "modified": 1749071632
 }
