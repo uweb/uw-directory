@@ -134,6 +134,12 @@ const website = $(this).data('website');
         switchToTab('tab-two');
         setViewButton('list');
     });
+
+    $(document).on('keydown', function (e) {
+        if (e.key === 'Escape') {
+            $('#profile-modal').fadeOut();
+        }
+    });
 });
 // keep focus in modal
 $(document).on('keydown', '#profile-modal', function(e) {

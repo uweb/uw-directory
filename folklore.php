@@ -284,6 +284,9 @@ function uw_directory_shortcode()
         $query = new WP_Query([
             "post_type" => "directory_entry",
             "posts_per_page" => -1,
+            "meta_key" => "last_name",       
+            "orderby" => "meta_value",        
+            "order" => "ASC",                 
         ]);
         $table_rows = "";
 
