@@ -295,6 +295,7 @@ function uw_directory_shortcode()
                 $first = get_field("first_name");
                 $last = get_field("last_name");
                 $email = get_field("email");
+                $website = get_field("website");
                 $pic = get_field("image");
                 $default_img = plugins_url("assets/dubs.jpg", __FILE__);
                 $terms = get_the_terms(get_the_ID(), "department");
@@ -345,6 +346,7 @@ function uw_directory_shortcode()
                                         $dept
                                     ); ?>"
                                     data-email="<?php echo esc_attr($email); ?>"
+                                     data-website="<?php echo esc_attr($website); ?>"
                                     data-bio="<?php echo esc_attr($bio); ?>"
                                     data-img="<?php echo $img_url; ?>">
                                 <span>View Profile</span>

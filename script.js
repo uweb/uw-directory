@@ -96,8 +96,16 @@ jQuery(document).ready(function ($) {
         $('#modal-bio').text(     $(this).data('bio'));
         $('#modal-email').text(   $(this).data('email'));
         $('#modal-connect-header').text(`Connect with ${$(this).data('name')}`);
-        $('#modal-links').text(   'LinkedIn/Calendly/etc');
-        $('#modal-img').attr('src', $(this).data('img'));
+const website = $(this).data('website');
+        $('#modal-links').html(
+            website
+              ? `<a href="${website}" target="_blank" rel="noopener" class="linkedin-link">
+                   <i class="fa-brands fa-linkedin" aria-hidden="true"></i>
+                   <span class="link-label">LinkedIn</span>
+                 </a>`
+              : ''
+          );
+                  $('#modal-img').attr('src', $(this).data('img'));
         $('#profile-modal').fadeIn(function(){
             $(this).find('.uw-modal-close').focus();
         });

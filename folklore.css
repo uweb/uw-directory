@@ -75,6 +75,9 @@
   border: 1px solid #e8e3d3;
   border-right: none;
   height: 48px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   background-color: white;
 }
 .uw-directory .arrow-block {
