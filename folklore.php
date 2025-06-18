@@ -204,10 +204,10 @@ function uw_directory_shortcode()
     <!-- Filter Box -->
 <div class="folklore-box">
 <div class="folklore-inner">
-<h2 class="section-label" for="dropdownMenuButton">
+<p class="section-label" for="dropdownMenuButton">
   Categories filter dropdown  <br><small>Sorts by department</small>
 
-</h2>
+</p>
 
   <div class="filter">
     <?php
@@ -245,9 +245,9 @@ function uw_directory_shortcode()
 <!-- Search Box -->
 <div class="folklore-box search">
 <div class="folklore-inner">
-<h2 class="section-label" for="dropdownMenuButton">
+<p class="section-label" for="dropdownMenuButton">
   Search for name, team or role <br><small>Results will update as you type</small>
-</h2>
+      </p>
   <section aria-label="Search" style="width: 100%;">
     <form class="searchbox">
       <div>
@@ -411,14 +411,14 @@ function uw_directory_shortcode()
         <div id="profile-modal" class="uw-modal" style="display:none;">
             <div class="uw-modal-content">
                 <!-- <span class="uw-modal-close">&times;</span> -->
-              <button
-                  type="button"
-                  class="uw-modal-close"
-                  role="button"
-                  tabindex="0"
-                  aria-label="Close profile modal">
-                &times;
-              </button>
+                <span
+  class="uw-modal-close"
+  role="button"
+  tabindex="0"
+  aria-label="Close profile modal"
+  onclick="closeModal()">
+  &times;
+</span>
                 <div class="uw-modal-flex">
                     <div class="uw-modal-img-col">
                         <img id="modal-img" src="" alt="Profile Image"/>
