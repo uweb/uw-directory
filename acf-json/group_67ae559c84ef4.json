@@ -34,7 +34,7 @@
             "aria-label": "",
             "type": "text",
             "instructions": "",
-            "required": 0,
+            "required": 1,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "",
@@ -51,6 +51,71 @@
             "key": "field_67b666b613e18",
             "label": "Last Name",
             "name": "last_name",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_67ae55cecb638",
+            "label": "Department",
+            "name": "department",
+            "aria-label": "",
+            "type": "taxonomy",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "taxonomy": "department",
+            "add_term": 1,
+            "save_terms": 1,
+            "load_terms": 0,
+            "return_format": "id",
+            "field_type": "select",
+            "allow_null": 0,
+            "bidirectional": 0,
+            "multiple": 0,
+            "bidirectional_target": []
+        },
+        {
+            "key": "field_67b666e513e1a",
+            "label": "Title",
+            "name": "title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_685c1e4c1f9e5",
+            "label": "Pronouns",
+            "name": "pronouns",
             "aria-label": "",
             "type": "text",
             "instructions": "",
@@ -87,11 +152,11 @@
             "append": ""
         },
         {
-            "key": "field_67b666e513e1a",
-            "label": "Title",
-            "name": "title",
+            "key": "field_67b6675fe3297",
+            "label": "Website",
+            "name": "website",
             "aria-label": "",
-            "type": "text",
+            "type": "url",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -101,40 +166,12 @@
                 "id": ""
             },
             "default_value": "",
-            "maxlength": "",
-            "placeholder": "",
-            "prepend": "",
-            "append": ""
+            "placeholder": ""
         },
         {
-            "key": "field_67ae55cecb638",
-            "label": "Department",
-            "name": "department",
-            "aria-label": "",
-            "type": "taxonomy",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "taxonomy": "department",
-            "add_term": 1,
-            "save_terms": 1,
-            "load_terms": 0,
-            "return_format": "id",
-            "field_type": "select",
-            "allow_null": 0,
-            "bidirectional": 0,
-            "multiple": 0,
-            "bidirectional_target": []
-        },
-        {
-            "key": "field_67b6675fe3297",
-            "label": "Website",
-            "name": "website",
+            "key": "field_6864f62fd3b3b",
+            "label": "linkedin",
+            "name": "linkedin",
             "aria-label": "",
             "type": "url",
             "instructions": "",
@@ -154,7 +191,7 @@
             "name": "bio",
             "aria-label": "",
             "type": "wysiwyg",
-            "instructions": "",
+            "instructions": "Max 1000 characters including spaces.",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -189,5 +226,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1749668256
+    "modified": 1751585766
 }

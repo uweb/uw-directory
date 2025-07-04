@@ -1,30 +1,89 @@
-﻿# UW Folklore Directory Plugin
+﻿# Folklore Plugin
 
-This is a custom WordPress plugin that displays the University of Washington directory using a searchable and filterable interface.
+_Displays a searchable, filterable directory of people with grid/list views and profile modals._
+
+---
 
 ## Features
 
-- Grid and list view tabs
-- Search and filter by category (e.g., department, title)
-- Responsive design
-- Uses custom post types to manage directory entries
+- **Custom Post Type:**  
+  `directory_entry` for managing people profiles.
 
-## How to Use
+- **Custom Taxonomy:**  
+  Departments for categorizing entries.
+
+- **Front-End Directory:**
+  - Filter by department or categories.
+  - Live search by name, department, title and email.
+  - Toggle between grid and list views.
+  - Modal popups for detailed profiles.
+
+- **Accessibility:**  
+  Built-in ARIA labels and keyboard navigation.  
+  Responsive layouts for mobile, tablet, and desktop.
+
+---
+
+## Installation
 
 1. **Upload the Plugin**
-   - Copy the entire `uw-folklore` folder into your WordPress installation’s `/wp-content/plugins/` directory.
+   - Upload the plugin folder to:  
+     `/wp-content/plugins/folklore-plugin/`
 
 2. **Activate the Plugin**
-   - Go to your WordPress Admin Panel → Plugins → Find “UW Folklore” → Click **Activate**.
+   - In your WordPress admin dashboard, go to **Plugins** and activate **Folklore Plugin**.
 
-3. **Add Entries**
-   - Navigate to “Directory” in the admin sidebar and start adding entries (Name, Description, etc.).
+3. **Install Required Plugins**
+   - Make sure **UW Storytelling Modules** *or* **Advanced Custom Fields Pro (ACF Pro)** is active for custom field functionality.
 
-4. **Display on a Page**
-   - Create a new page and insert the shortcode:
-     ```
+---
+
+## Usage
+
+1. **Assign Departments**
+   - Use the **Departments** taxonomy to organize entries.
+   - Add departments via ACF Pro in WP dashboard.
+
+2. **Add Directory Entries**
+   - Go to **Directory > Add New Entry** in the WordPress admin.
+   - Fill out the **required fields**: `first name`, `last name`, `title`, `department`  
+     **Optional fields**: `email`, `image`, `bio`, `pronouns`, `website`, `LinkedIn`
+
+3. **Display the Directory**
+   - Add either of the following shortcodes to any page or post:
+
+     ```php
      [uw_directory]
+     [folklore]
      ```
-   - You should now see the directory with view toggles and filters.
+
+   - Both shortcodes render the directory.
+
+---
+
+## Developer Customization
+
+- **Fields:**  
+  Extend or modify fields via ACF Pro using the field group `group_67ae559c84ef4`.
+
+- **Styling:**  
+  Customize styles in `folklore.css`, or enqueue your own stylesheet for overrides.
+
+- **Scripts:**  
+  Custom JavaScript lives in `script.js`. You can extend or override functionality by enqueuing additional scripts.
+
+- **Assets:**  
+  Uses CDN-hosted Bootstrap, FontAwesome, Bootstrap Icons, and Isotope.js.  
+  Swap these out with local assets if needed.
+
+---
+
+## Notes
+
+- The plugin includes accessibility and responsive design features, but you should still test it against your theme.
+- **Bio character limit:** Keep bios under **1000 characters**, including spaces to prevent layout issues.
+
+---
+
 
 

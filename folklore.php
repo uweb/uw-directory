@@ -205,7 +205,7 @@ function uw_directory_shortcode()
 <div class="folklore-box">
 <div class="folklore-inner">
 <p class="section-label" for="dropdownMenuButton">
-  Categories filter dropdown  <br><small>Sorts by department</small>
+  Categories filter  <br><small>Select from the dropdown</small>
 
 </p>
 
@@ -259,11 +259,22 @@ function uw_directory_shortcode()
 
         </div>
 </div>
-<!-- View Toggle Box -->
+
 <div class="folklore-box view-toggle">
     <h2 class="section-label" for="dropdownMenuButton">
    <br><small ></small>
 </h2>
+ <div>
+ <p class="section-label clear-filters" role="button" tabindex="0" style="cursor:pointer; text-decoration:underline;">
+  Clear all filters
+</p>
+
+    </div>
+</div>
+
+<!-- View Toggle Box -->
+<div class="folklore-box view-toggle">
+
     <div class="toggle-view">
         <button class="view-btn tab-view tab-button active" type="button" id="gridViewBtn" data-tab="tab-one" >
             <i class="fa-solid fa-border-all" ></i> Grid
@@ -275,7 +286,11 @@ function uw_directory_shortcode()
 </div>
 
 </div>
-
+<div style="display: flex; justify-content: center; margin-bottom:12px">
+  <p class="section-label" id="results-count" aria-live="polite" aria-atomic="true">
+    0 results found!
+  </p>
+</div>
 
 
         <?php
@@ -300,7 +315,7 @@ function uw_directory_shortcode()
                 $email = get_field("email");
                 $website = get_field("website");
                 $pic = get_field("image");
-                $default_img = plugins_url("assets/dubs.jpg", __FILE__);
+                $default_img = plugins_url("assets/dubs.png", __FILE__);
                 $terms = get_the_terms(get_the_ID(), "department");
                 if (!empty($terms) && !is_wp_error($terms)) {
                     $term = array_shift($terms);
@@ -317,26 +332,29 @@ function uw_directory_shortcode()
                     $pic && !empty($pic["url"])
                         ? esc_url($pic["url"])
                         : esc_url($default_img);
-
+                        $pronouns = get_field("pronouns");
+                        $linkedin = get_field("linkedin");
                 /* ----- Grid Tab ----- */
                 ?>
                 <div class="uw-card <?php echo esc_attr($d_slug); ?>"
                      data-name="<?php echo esc_attr("$first $last"); ?>"
+                     
                      data-email="<?php echo esc_attr($email); ?>"
                      data-department="<?php echo esc_attr($d_slug); ?>">
                      <img src="<?php echo $img_url; ?>" alt="Profile Image" class="uw-card-img"/>
                     <div class="uw-card-text"><span>
-                        <h3 class="flname"><?php echo esc_html(
+                        <h2 class="h2"><?php echo esc_html(
                             "$first $last"
-                        ); ?></h3>
+                        ); ?></h2>
                         <div class="udub-slant-divider white"><span></span></div>
-                        <h4 class="title"><?php echo esc_html(
+                        
+                       <p class="title"><?php echo esc_html(
                             $title
                         ); ?></p>
-                        <h4 class="department"><?php echo esc_html(
+                        <p class="department"><?php echo esc_html(
                             $dept
                         ); ?></p>
-                        <h4 class="email"><?php echo esc_html(
+                        <p class="email"><?php echo esc_html(
                             $email
                         ); ?></p>
                         <p class="button">
@@ -350,8 +368,15 @@ function uw_directory_shortcode()
                                     ); ?>"
                                     data-email="<?php echo esc_attr($email); ?>"
                                      data-website="<?php echo esc_attr($website); ?>"
-                                    data-bio="<?php echo esc_attr($bio); ?>"
-                                    data-img="<?php echo $img_url; ?>">
+                                      data-pronouns="<?php echo esc_attr($pronouns); ?>"
+        data-linkedin="<?php echo esc_attr($linkedin); ?>"
+                                     
+                                     <?php
+// Let WordPress add <p> and <br> if they aren’t already there, 
+// then keep only safe tags before putting it in an attribute.
+$bio_html = wp_kses_post( wpautop( $bio ) );
+?>
+data-bio="<?php echo esc_attr( $bio_html ); ?>"                                    data-img="<?php echo $img_url; ?>">
                                 <span>View Profile</span>
                             </button>
                         </p>
@@ -388,68 +413,75 @@ function uw_directory_shortcode()
         echo "</div></div>";
         ?>
         <div id="tab-two" class="tab-content" style="display:none;">
-            <div id="directory-table-wrapper">
+            <div id="directory-table-wrapper"  class="table-responsive-sm">
             <label class="section-label">Click a row to view the full profile</label>
 
-                <table class="directory-table" >
+                <table class=" directory-table" >
                 <caption class="screen-reader-text">Click a row to view the full profile</caption>
                     <thead>
                         <tr role="button">
                             <th></th>
-                            <th>Name</th>
-                            <th>Role</th>
-                            <th>Department</th>
-                            <th>Email</th>
+                            <th  scope="col">Name</th>
+                            <th  scope="col">Role</th>
+                            <th  scope="col">Department</th>
+                            <th  scope="col">Email</th>
                         </tr>
                     </thead>
                     <tbody aria-live="polite" aria-atomic="false"><?php echo $table_rows; ?></tbody>
                   </table>
             </div>
         </div>
-        <div id="no-results-message" style="display:none; text-align:center; margin:2rem 0;">
-            <p>No results found.</p>
-        </div>
+      
 
         <!-- Bio modal -->
-        <div id="profile-modal" class="uw-modal" style="display:none;">
-            <div class="uw-modal-content">
-                <!-- <span class="uw-modal-close">&times;</span> -->
-                <span
-  class="uw-modal-close"
-  role="button"
-  tabindex="0"
-  aria-label="Close profile modal"
-  onclick="closeModal()">
-  &times;
-</span>
-                <div class="uw-modal-flex">
-                    <div class="uw-modal-img-col">
-                        <img id="modal-img" src="" alt="Profile Image"/>
-                    </div>
-                    <div class="uw-modal-text-col">
-                        <h4 id="modal-name"></h4>
-                        <h5 id="modal-title" class="bold" ></h5>
-                        <h6 id="modal-department" class="light-text" ></h6>
-                        <h6 id="modal-bio"></h6>
-                    </div>
-                </div>
-                <div class="uw-modal-footer">
-                    <h4 id="modal-connect-header"></h4>
-                    <h5 id="modal-email"></h5>
-                    <h5 id="modal-links"></h5>
-                </div>
-            </div>
-        </div>
+        
+
+       
+<div id="profile-modal" class="uw-modal"style="display: none;">
+  <div class="folklore-modal-content">
+    <button type="button" class="folklore-modal-close" aria-label="Close" onclick="closeModal()">&times;</button>
+    <div class="folklore-modal-body">
+      <div class="folklore-modal-left">
+        <img id="modal-img" src="" alt="Profile Image" class="modal-photo" />
+        <div class="modal-contact toggle1" aria-hidden="false">
+  <h3 class="h3">Connect</h3>
+  <p class="modal-email">
+    <i class="fa-solid fa-envelope"></i>
+    <a href="#" id="modal-email-1" target="_blank">Email</a>
+  </p>
+  <p id="modal-links-1">
+    <i class="fa-brands fa-linkedin"></i>
+    <a href="#" id="modal-linkedin-1" target="_blank">LinkedIn</a>
+  </p>
+</div>
+
+      </div>
+      <div class="folklore-modal-right">
+        <h2 id="modal-name"></h2>
+        <p id="modal-pronouns" class="modal-pronouns" style="margin-top: -0.5rem; color: #666;"></p>
+        <p id="modal-title" class="modal-subtitle"></p>
+        <p id="modal-department" class="modal-dept"></p>
+        <div id="modal-bio" class="modal-bio"></div>
+        <span id="bio-toggle" class="see-more-link" hidden>See more</span>
+
+      </div>
+    </div>
+<div class="modal-contact toggle2" aria-hidden="true" style="display: none;">
+  <h3 class="h3">Connect</h3>
+  <p class="modal-email">
+    <i class="fa-solid fa-envelope"></i>
+    <a href="#" id="modal-email-2" target="_blank">Email</a>
+  </p>
+  <p id="modal-links-2">
+    <i class="fa-brands fa-linkedin"></i>
+    <a href="#" id="modal-linkedin-2" target="_blank">LinkedIn</a>
+  </p>
+</div>
+  </div>
+</div>
+
     </div>
     <?php return ob_get_clean();
 }
 add_shortcode("uw_directory", "uw_directory_shortcode");
-
-/* add_filter( 'document_title_parts', 'folklore_override_title' );
-function folklore_override_title( $title ) {
-    if ( is_page() && has_shortcode( get_post()->post_content, 'uw_directory' ) ) {
-        $title['title'] = 'Folklore people directory';
-    }
-    return $title;
-}
- */
+add_shortcode("folklore", "uw_directory_shortcode");

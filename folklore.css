@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /*  Main directory wrapper */
 .uw-directory {
   padding-bottom: 160px;
@@ -11,6 +12,7 @@
   /* Updated uw-card styling */
   /* Responsive fallback */
   /* Modal for profile view */
+  /* link style */
   /* Table list view styling */
 }
 .uw-directory .section-label {
@@ -28,8 +30,16 @@
 .uw-directory .view-toggle .fa-solid {
   margin-right: 10px;
 }
-.uw-directory .flname {
+.uw-directory .h3 {
+  font-weight: 800;
+  font-size: 24px;
+  color: #4b2e83;
+  margin-top: 0px;
+}
+.uw-directory .h2 {
+  font-size: 24px;
   font-weight: bold;
+  color: white;
 }
 .uw-directory .title {
   color: white;
@@ -45,11 +55,6 @@
   font-weight: bold;
   font-size: 16px;
 }
-.uw-directory #no-results-message {
-  display: none;
-  text-align: center;
-  margin: 2rem 0;
-}
 .uw-directory .custom-dropdown {
   width: 240px;
   font-weight: bold;
@@ -64,9 +69,9 @@
   background-color: white;
   box-shadow: none;
   border: none;
+  justify-content: space-between;
 }
 .uw-directory .label-text {
-  flex-grow: 1;
   text-align: left;
   padding: 0 12px;
   line-height: 48px;
@@ -75,10 +80,14 @@
   border: 1px solid #e8e3d3;
   border-right: none;
   height: 48px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   background-color: white;
+  flex: 1 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis; /* … when department name is huge  */
+  white-space: nowrap;
+}
+.uw-directory .custom-dropdown .custom-btn .arrow-block {
+  flex: 0 0 auto; /* never shrinks                   */
 }
 .uw-directory .arrow-block {
   width: 49px;
@@ -443,6 +452,138 @@
   font-weight: 400;
   color: black;
 }
+.uw-directory .closef {
+  float: right;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #373a3c;
+  text-shadow: 0 1px 0 #fff;
+  opacity: 0.5;
+  font-size: 1.8rem;
+  font-weight: 700;
+  /* line-height: 1; */
+  color: #373a3c;
+  text-shadow: 0 1px 0 #fff;
+  float: right;
+  position: absolute;
+  top: 26px;
+  right: 26px;
+}
+.uw-directory .folklore-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.6);
+  width: 100%;
+  height: 100%;
+  display: none;
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+}
+.uw-directory .folklore-modal-content {
+  background: #fff;
+  max-width: 900px;
+  width: 90%;
+  margin: 40px auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.uw-directory .folklore-modal-close {
+  position: absolute;
+  top: -4px;
+  right: -1px;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #444;
+  cursor: pointer;
+}
+.uw-directory .folklore-modal-body {
+  display: flex;
+  flex-wrap: wrap;
+}
+.uw-directory .folklore-modal-left {
+  flex: 1 1 250px;
+  background-color: #eee7d9;
+}
+.uw-directory .modal-photo {
+  width: 100%;
+  height: 394px;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.uw-directory .folklore-modal-right {
+  flex: 2 1 500px;
+  padding: 2rem;
+}
+.uw-directory .modal-subtitle {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+.uw-directory .folklore-modal-body .modal-bio p {
+  margin: 0 0 0.75rem;
+}
+.uw-directory .folklore-modal-body .modal-bio { /* allow scrolling if very long */
+  max-height: 19vh;
+  overflow-y: auto;
+}
+.uw-directory .folklore-modal-body .modal-bio::-webkit-scrollbar {
+  display: none;
+}
+.uw-directory .results-message {
+  font-family: "Encode Sans Compressed", sans-serif;
+}
+.uw-directory #modal-bio {
+  max-height: 6.5em; /* 6 lines   */
+  overflow: hidden;
+  position: relative;
+  transition: max-height 0.25s ease;
+}
+.uw-directory #modal-bio::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 60%, #fff 95%);
+  pointer-events: none;
+}
+.uw-directory #modal-bio.expanded {
+  max-height: none;
+}
+.uw-directory #modal-bio.expanded::after {
+  display: none;
+}
+.uw-directory .see-more-link {
+  display: inline-block;
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #4b2e83;
+  cursor: pointer;
+}
+.uw-directory .modal-dept {
+  font-style: italic;
+  margin-bottom: 1rem;
+}
+.uw-directory .modal-bio {
+  color: #333;
+}
+.uw-directory .modal-contact h4 {
+  margin-bottom: 0.5rem;
+  color: #4b2e83;
+}
+.uw-directory .modal-contact p {
+  margin: 0.25rem 0;
+}
+.uw-directory .modal-contact i {
+  margin-right: 8px;
+}
+.uw-directory .modal-contact {
+  background-color: #eee7d9;
+  padding: 2rem;
+}
 .uw-directory .directory-table {
   width: 100%;
   border-collapse: collapse;
@@ -464,7 +605,7 @@
   vertical-align: middle;
 }
 .uw-directory .directory-table tr:nth-child(even) {
-  background-color: #f6f6f6;
+  background-color: #fff;
 }
 .uw-directory .directory-table td:nth-child(2) {
   font-weight: 600;
@@ -481,6 +622,16 @@
 .uw-directory .directory-table tbody tr:hover {
   background-color: #ece6f0;
 }
+.uw-directory .directory-table tbody tr {
+  background: #ffffff;
+  transition: background 0.15s ease-in-out;
+}
+.uw-directory .directory-table tbody tr.even {
+  background: #f1f1f6 !important;
+}
+.uw-directory .directory-table tbody tr:hover {
+  background: #ece6f0 !important;
+}
 
 .uw-directory.has-sidebar #directory-container {
   display: flex !important;
@@ -493,5 +644,12 @@
 }
 .uw-directory.has-sidebar .folklore-box.search {
   width: 300px;
+}
+.uw-directory.has-sidebar .directory-table img {
+  width: 100%;
+  height: auto;
+  -o-object-fit: cover;
+     object-fit: cover;
+  display: block;
 }
 /*# sourceMappingURL=folklore.css.map */
