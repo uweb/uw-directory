@@ -8,15 +8,53 @@ jQuery(document).ready(function ($) {
   let currentDeptFilter = "*";
 
   function updateNoResults(gridMatches, tableMatches) {
-    $("#no-results-message").toggle(gridMatches === 0 && tableMatches === 0);
+    const noResults = gridMatches === 0 && tableMatches === 0;
+
+    if ($("#tab-two").is(":visible")) {
+      $(".table-instruction, .table-headers").toggle(!noResults);
+    }
+
+    $("#no-results-message").toggle(noResults);
   }
+  function updateSearchButtonState() {
+    const searchText = $("#searchbar").val().trim();
+    $("#searchsubmit").prop("disabled", searchText === "");
+  }
+  updateSearchButtonState()
+  function trapFocus(modalEl) {
+    const focusableElements = modalEl.querySelectorAll(
+      'a[href]:not([tabindex="-1"]), button:not([disabled]):not([tabindex="-1"]), [tabindex]:not([tabindex="-1"])'
+    );
+    const first = focusableElements[0];
+    const last = focusableElements[focusableElements.length - 1];
+
+    modalEl.addEventListener("keydown", function (e) {
+      if (e.key === "Tab") {
+        if (focusableElements.length === 0) return;
+
+        if (e.shiftKey) {
+          if (document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          }
+        } else {
+          if (document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
+      }
+    });
+  }
+
   function updateResultsCount() {
     const gridCount = $grid.data("isotope").filteredItems.length;
     const tableCount = $("#directory-table-wrapper tbody tr:visible").length;
     const totalCount = Math.max(gridCount, tableCount);
+    updateNoResults(gridCount, tableCount);
 
     $("#results-count").text(
-      `${totalCount} result${totalCount === 1 ? "" : "s"} found!`
+      `${totalCount} result${totalCount === 1 ? "" : "s"} found`
     );
   }
 
@@ -37,11 +75,21 @@ jQuery(document).ready(function ($) {
       })
       .hide();
   }
+  function updateClearFiltersButton() {
+    const searchText = $("#searchbar").val().trim();
+    const clearBtn = $(".clear-filters");
+
+    if (searchText || currentDeptFilter !== "*") {
+      clearBtn.show(); // Show button when filters are active
+    } else {
+      clearBtn.hide(); // Hide button when no filters are active
+    }
+  }
 
   function applyFilters() {
-    const searchText = $("#s").val().toLowerCase();
-
-    /* ----  TABLE ROWS  ----------------------------------------- */
+    const searchText = $("#searchbar").val().toLowerCase();
+    updateSearchButtonState();
+    /* ----  Table rows  --------- */
     $("#directory-table-wrapper tbody tr").each(function () {
       const rowDept = $(this).data("department-slug");
       const deptMatch =
@@ -58,7 +106,7 @@ jQuery(document).ready(function ($) {
       $(this).toggle(deptMatch && searchMatch);
     });
 
-    /* ----  GRID CARDS  ----------------------------------------- */
+    /* ----  Grid cards ---------- */
     $grid.isotope({
       filter: function () {
         const cardDeptMatch =
@@ -88,13 +136,15 @@ jQuery(document).ready(function ($) {
 
     restyleTableStripes();
     updateResultsCount();
+    updateClearFiltersButton();
+
   }
 
-  $("#s").on("keyup", applyFilters);
-  $("#searchsubmit").on("click", (e) => {
-    e.preventDefault();
+  $("#searchbar").on("input", function () {
+    updateSearchButtonState();
     applyFilters();
   });
+
 
   $(".custom-dropdown .dropdown-menu").on(
     "click",
@@ -102,7 +152,7 @@ jQuery(document).ready(function ($) {
     function (e) {
       e.preventDefault();
 
-      currentDeptFilter = $(this).data("filter"); // store slug or “*”
+      currentDeptFilter = $(this).data("filter"); // store slug or "*"
       $("#dropdown-label").text($(this).data("value"));
       hideDropdownOption(currentDeptFilter);
       applyFilters();
@@ -112,18 +162,14 @@ jQuery(document).ready(function ($) {
       ).toggle();
     }
   );
+
   $(document).on("click", ".clear-filters", function () {
-    $("#s").val("");
+    $("#searchbar").val("");
     $('.custom-dropdown .dropdown-item[data-filter="*"]').trigger("click");
+    updateSearchButtonState();
+
   });
 
-  $(document).on("keydown", ".clear-filters", function (e) {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      $("#s").val("");
-      $('.custom-dropdown .dropdown-item[data-filter="*"]').trigger("click");
-    }
-  });
 
   $("#gridViewBtn").on("click", () => {
     switchToTab("tab-one");
@@ -142,53 +188,85 @@ jQuery(document).ready(function ($) {
       $("#directory-table-wrapper tbody tr:visible").length
     );
   });
-  $(".open-profile-modal").on("click", function () {
-    const email = $(this).data("email");
-    const linkedin = $(this).data("linkedin");
 
-    // Set both versions of email
-    $("#modal-email-1, #modal-email-2")
-      .attr("href", `mailto:${email}`)
-      .text(email);
-
-    // Set both versions of LinkedIn
-    $("#modal-linkedin-1, #modal-linkedin-2").attr("href", linkedin);
-
-    // Reset views
-    $(".toggle1").show().attr("aria-hidden", "false");
-    $(".toggle2").hide().attr("aria-hidden", "true");
-  });
-
+  // ONE single handler for opening profile modal
   $(document).on("click", ".open-profile-modal", function () {
-    $("#modal-name").text($(this).data("name"));
-    const pronouns = $(this).data("pronouns");
-
+    const $this = $(this);
+    const email = $this.data("email");
+    const linkedin = $this.data("linkedin");
+    const website = $this.data("website");
+    const name = $this.data("name");
+    const pronouns = $this.data("pronouns");
+    const title = $this.data("title");
+    const department = $this.data("department");
+    const bio = $this.data("bio");
+    const img = $this.data("img");
+    // Fill basic info
+    $("#modal-name").text(name);
     $("#modal-pronouns")
       .text(pronouns ? `(${pronouns})` : "")
       .toggle(!!pronouns);
-    $("#modal-title").text($(this).data("title"));
-    $("#modal-department").text($(this).data("department"));
-    $("#modal-bio").html($(this).data("bio"));
-    $(".modal-email").text($(this).data("email"));
-    $("#modal-img").attr("src", $(this).data("img"));
-    $(".toggle1").hide();
-    // show link only if bio overflows 8 lines
+    $("#modal-title").text(title);
+    $("#modal-department").text(department);
+    $("#modal-bio").html(bio);
+    $("#modal-img").attr("src", img);
+
+    $(".modal-email").attr("href", `mailto:${email}`);
+    $(".modal-email .email-text").text(email || "Email");
+    $(".modal-contact .contact-item").remove();
+
+    if (email) {
+      $(".modal-contact").append(`
+        <div class="contact-item">
+            <i class="fa-solid fa-envelope"></i>
+            <a class="modal-email" href="mailto:${email}" target="_blank">
+                <span class="email-text">${email}</span>
+            </a>
+        </div>
+    `);
+    }
+
+    if (linkedin) {
+      $(".modal-contact").append(`
+        <div class="contact-item">
+            <i class="fa-brands fa-linkedin"></i>
+            <a class="modal-linkedin" href="https://linkedin.com/in/${linkedin}" target="_blank">
+                <span>LinkedIn</span>
+            </a>
+        </div>
+    `);
+    }
+
+    if (website) {
+      $(".modal-contact").append(`
+        <div class="contact-item">
+            <i class="fa-solid fa-globe"></i>
+            <a class="modal-website" href="${website}" target="_blank">
+                <span>Website</span>
+            </a>
+        </div>
+    `);
+    }
+
+
+    // Handle toggle visibility and bio toggle
+    $(".horizontal-modal-footer").hide();
+    $(".vertical-modal-footer").show();
+
     const bioEl = document.getElementById("modal-bio");
     const toggle = document.getElementById("bio-toggle");
 
-    // Reset state on open
+    // Reset bio toggle
     bioEl.classList.remove("expanded");
     toggle.textContent = "See more";
-    $(".toggle1").hide(); // Hidden when collapsed
-    $(".toggle2").show(); // Visible when collapsed
+    $(".horizontal-modal-footer").hide();
+    $(".vertical-modal-footer").show();
 
-    // Check if bio is overflowing and show toggle only if needed
     requestAnimationFrame(() => {
       const overflowing = bioEl.scrollHeight > bioEl.clientHeight + 2;
       toggle.hidden = !overflowing;
     });
 
-    // ----- toggle handler -----
     $("#bio-toggle")
       .off("click")
       .on("click", function () {
@@ -197,37 +275,31 @@ jQuery(document).ready(function ($) {
           .hasClass("expanded");
         this.textContent = expanded ? "See less" : "See more";
 
-        $(".toggle1").toggle(expanded);
-        $(".toggle2").toggle(!expanded);
+        $(".horizontal-modal-footer").toggle(expanded);
+        $(".vertical-modal-footer").toggle(!expanded);
       });
 
     if (window.Calendly?.initInlineWidgets) {
       Calendly.initInlineWidgets();
     }
 
-    const website = $(this).data("website");
-    const linkedin = $(this).data("linkedin");
-
-    let linksHTML = "";
-    if (website) {
-      linksHTML += `<p><a href="${website}" target="_blank" rel="noopener">
-                    <i class="fa-solid fa-globe" aria-hidden="true"></i> Website</a></p>`;
-    }
-    if (linkedin) {
-      linksHTML += `<p><a href="https://linkedin.com/in/${linkedin}" target="_blank" rel="noopener">
-                    <i class="fa-brands fa-linkedin" aria-hidden="true"></i> LinkedIn</a></p>`;
-    }
-
-    $(".toggle1 #modal-links, .toggle2 #modal-links").html(linksHTML);
-
     $("#profile-modal").fadeIn(() => {
-      $("#profile-modal").find(".folklore-modal-close").focus();
+      const modal = document.getElementById("profile-modal");
+      modal.focus();
+      trapFocus(modal);
+
+      const firstFocusable = modal.querySelector(
+        'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      );
+      if (firstFocusable) firstFocusable.focus();
     });
+
   });
 
   $(document).on("click", ".folklore-modal-close", () =>
     $("#profile-modal").fadeOut()
   );
+
   $(document).on("keydown", ".open-profile-modal", function (e) {
     if (e.key === "Enter") {
       e.preventDefault();

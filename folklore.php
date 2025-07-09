@@ -249,28 +249,29 @@ function uw_directory_shortcode()
   Search for name, team or role <br><small>Results will update as you type</small>
       </p>
   <section aria-label="Search" style="width: 100%;">
-    <form class="searchbox">
-      <div>
-        <input type="text" id="s" placeholder="Search for name, team, role" autocomplete="off" />
-        <button type="submit" id="searchsubmit"></button>
-      </div>
-    </form>
+  <form class="searchbox">
+    <div>
+        <input type="text" id="searchbar" placeholder="Search for name, team, role" autocomplete="off" />
+        <button type="submit" id="searchsubmit" disabled></button>
+    </div>
+</form>
+
   </section>
 
         </div>
 </div>
+<div class="folklore-box ">
+<div class="folklore-inner">
 
-<div class="folklore-box view-toggle">
-    <h2 class="section-label" for="dropdownMenuButton">
-   <br><small ></small>
-</h2>
- <div>
- <p class="section-label clear-filters" role="button" tabindex="0" style="cursor:pointer; text-decoration:underline;">
-  Clear all filters
-</p>
-
+  <div>
+        <button type="button" class="clear-filters view-btn tab-view tab-button active">
+            <i class="fa-solid fa-xmark fa-lg" ></i>Clear all filters
+        </button>
     </div>
+
+        </div>
 </div>
+
 
 <!-- View Toggle Box -->
 <div class="folklore-box view-toggle">
@@ -288,13 +289,12 @@ function uw_directory_shortcode()
 </div>
 <div style="display: flex; justify-content: center; margin-bottom:12px">
   <p class="section-label" id="results-count" aria-live="polite" aria-atomic="true">
-    0 results found!
   </p>
 </div>
 
 
         <?php
-        /* ----------  Tabs ---------- */
+        /* ----------  Grid/list views ---------- */
         echo '<div id="tab-one" class="tab-content" style="display:block;"><div id="directory-container" aria-live="polite" aria-atomic="true">';
         $query = new WP_Query([
             "post_type" => "directory_entry",
@@ -328,13 +328,14 @@ function uw_directory_shortcode()
 
                 $title = get_field("title");
                 $bio = get_field("bio");
+                
                 $img_url =
                     $pic && !empty($pic["url"])
                         ? esc_url($pic["url"])
                         : esc_url($default_img);
                         $pronouns = get_field("pronouns");
                         $linkedin = get_field("linkedin");
-                /* ----- Grid Tab ----- */
+                /* ----- Grid View ----- */
                 ?>
                 <div class="uw-card <?php echo esc_attr($d_slug); ?>"
                      data-name="<?php echo esc_attr("$first $last"); ?>"
@@ -372,11 +373,10 @@ function uw_directory_shortcode()
         data-linkedin="<?php echo esc_attr($linkedin); ?>"
                                      
                                      <?php
-// Let WordPress add <p> and <br> if they aren’t already there, 
-// then keep only safe tags before putting it in an attribute.
+
 $bio_html = wp_kses_post( wpautop( $bio ) );
 ?>
-data-bio="<?php echo esc_attr( $bio_html ); ?>"                                    data-img="<?php echo $img_url; ?>">
+data-bio="<?php echo esc_attr( $bio_html ); ?>"  data-img="<?php echo $img_url; ?>">
                                 <span>View Profile</span>
                             </button>
                         </p>
@@ -391,7 +391,10 @@ data-bio="<?php echo esc_attr( $bio_html ); ?>"                                 
                        data-department="%4$s" 
                        data-bio="%5$s" 
                        data-img="%6$s" 
-                       data-department-slug="%7$s">
+                       data-department-slug="%7$s"
+                       data-pronouns="%8$s"
+                       data-linkedin="%9$s"
+                       data-website="%10$s">
                       <td><img src="%6$s" alt="Profile of %1$s"></td>
                       <td><strong>%1$s</strong></td>
                       <td>%2$s</td>
@@ -404,7 +407,10 @@ data-bio="<?php echo esc_attr( $bio_html ); ?>"                                 
                     esc_attr($dept),
                     esc_attr($bio),
                     esc_url($img_url),
-                    esc_attr($d_slug)
+                    esc_attr($d_slug),
+                    esc_attr($pronouns),
+                    esc_attr($linkedin), 
+                    esc_url($website) 
                 );
             endwhile;
             wp_reset_postdata();
@@ -412,47 +418,61 @@ data-bio="<?php echo esc_attr( $bio_html ); ?>"                                 
 
         echo "</div></div>";
         ?>
-        <div id="tab-two" class="tab-content" style="display:none;">
-            <div id="directory-table-wrapper"  class="table-responsive-sm">
-            <label class="section-label">Click a row to view the full profile</label>
-
-                <table class=" directory-table" >
-                <caption class="screen-reader-text">Click a row to view the full profile</caption>
-                    <thead>
-                        <tr role="button">
-                            <th></th>
-                            <th  scope="col">Name</th>
-                            <th  scope="col">Role</th>
-                            <th  scope="col">Department</th>
-                            <th  scope="col">Email</th>
-                        </tr>
-                    </thead>
-                    <tbody aria-live="polite" aria-atomic="false"><?php echo $table_rows; ?></tbody>
-                  </table>
-            </div>
-        </div>
+       <div id="tab-two" class="tab-content" style="display:none;">
+    <div id="directory-table-wrapper" class="table-responsive-sm">
+        <label class="section-label table-instruction">Click a row to view the full profile</label>
+        <table class="directory-table">
+            <caption class="screen-reader-text">Click a row to view the full profile</caption>
+            <thead class="table-headers">
+                <tr role="button">
+                    <th></th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Role</th>
+                    <th scope="col">Department</th>
+                    <th scope="col">Email</th>
+                </tr>
+            </thead>
+            <tbody aria-live="polite" aria-atomic="false"><?php echo $table_rows; ?></tbody>
+        </table>
+    </div>
+</div>
       
 
-        <!-- Bio modal -->
-        
-
-       
-<div id="profile-modal" class="uw-modal"style="display: none;">
+        <!-- Bio modal -->     
+<div id="profile-modal" class="uw-modal"style="display: none;"  tabindex="-1" >
   <div class="folklore-modal-content">
     <button type="button" class="folklore-modal-close" aria-label="Close" onclick="closeModal()">&times;</button>
     <div class="folklore-modal-body">
       <div class="folklore-modal-left">
         <img id="modal-img" src="" alt="Profile Image" class="modal-photo" />
-        <div class="modal-contact toggle1" aria-hidden="false">
-  <h3 class="h3">Connect</h3>
-  <p class="modal-email">
-    <i class="fa-solid fa-envelope"></i>
-    <a href="#" id="modal-email-1" target="_blank">Email</a>
-  </p>
-  <p id="modal-links-1">
-    <i class="fa-brands fa-linkedin"></i>
-    <a href="#" id="modal-linkedin-1" target="_blank">LinkedIn</a>
-  </p>
+        <div class="modal-contact horizontal-modal-footer" aria-hidden="false">
+    <h3 class="h3">Connect</h3>
+    <?php if (!empty($email)) : ?>
+        <div class="contact-item">
+            <i class="fa-solid fa-envelope"></i>
+            <a class="modal-email" href="mailto:<?php echo esc_attr($email); ?>" target="_blank">
+                <span class="email-text">Email</span>
+            </a>
+        </div>
+    <?php endif; ?>
+    
+    <?php if (!empty($linkedin)) : ?>
+        <div class="contact-item">
+            <i class="fa-brands fa-linkedin"></i>
+            <a class="modal-linkedin" href="https://linkedin.com/in/<?php echo esc_attr($linkedin); ?>" target="_blank">
+                <span>LinkedIn</span>
+            </a>
+        </div>
+    <?php endif; ?>
+    
+    <?php if (!empty($website)) : ?>
+        <div class="contact-item">
+            <i class="fa-solid fa-globe"></i>
+            <a class="modal-website" href="<?php echo esc_url($website); ?>" target="_blank">
+                <span>Website</span>
+            </a>
+        </div>
+    <?php endif; ?>
 </div>
 
       </div>
@@ -466,20 +486,35 @@ data-bio="<?php echo esc_attr( $bio_html ); ?>"                                 
 
       </div>
     </div>
-<div class="modal-contact toggle2" aria-hidden="true" style="display: none;">
-  <h3 class="h3">Connect</h3>
-  <p class="modal-email">
-    <i class="fa-solid fa-envelope"></i>
-    <a href="#" id="modal-email-2" target="_blank">Email</a>
-  </p>
-  <p id="modal-links-2">
-    <i class="fa-brands fa-linkedin"></i>
-    <a href="#" id="modal-linkedin-2" target="_blank">LinkedIn</a>
-  </p>
+<div class="modal-contact vertical-modal-footer" aria-hidden="true" style="display: none;">
+    <h3 class="h3">Connect</h3>
+    <?php if (!empty($email)) : ?>
+        <div class="contact-item">
+            <i class="fa-solid fa-envelope"></i>
+            <a class="modal-email" href="mailto:<?php echo esc_attr($email); ?>" target="_blank">
+                <span class="email-text">Email</span>
+            </a>
+        </div>
+    <?php endif; ?>
+    
+    <?php if (!empty($linkedin)) : ?>
+        <div class="contact-item">
+            <i class="fa-brands fa-linkedin"></i>
+            <a class="modal-linkedin" href="https://linkedin.com/in/<?php echo esc_attr($linkedin); ?>" target="_blank">
+                <span>LinkedIn</span>
+            </a>
+        </div>
+    <?php endif; ?>
+    
+    <?php if (!empty($website)) : ?>
+        <div class="contact-item">
+            <i class="fa-solid fa-globe"></i>
+            <a class="modal-website" href="<?php echo esc_url($website); ?>" target="_blank">
+                <span>Website</span>
+            </a>
+        </div>
+    <?php endif; ?>
 </div>
-  </div>
-</div>
-
     </div>
     <?php return ob_get_clean();
 }
