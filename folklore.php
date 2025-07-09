@@ -374,7 +374,7 @@ function uw_directory_shortcode()
                                      
                                      <?php
 
-$bio_html = wp_kses_post( wpautop( $bio ) );
+$bio_html =  esc_attr( $bio );
 ?>
 data-bio="<?php echo esc_attr( $bio_html ); ?>"  data-img="<?php echo $img_url; ?>">
                                 <span>View Profile</span>
@@ -383,42 +383,31 @@ data-bio="<?php echo esc_attr( $bio_html ); ?>"  data-img="<?php echo $img_url; 
                     </span></div>
                 </div>
                 <?php /* ----- List View  ----- */
-                $table_rows .= sprintf(
-                    '<tr class="open-profile-modal" role="button" tabindex="0" aria-label="View %1$s’s profile" 
-                       data-name="%1$s" 
-                       data-title="%2$s" 
-                       data-email="%3$s" 
-                       data-department="%4$s" 
-                       data-bio="%5$s" 
-                       data-img="%6$s" 
-                       data-department-slug="%7$s"
-                       data-pronouns="%8$s"
-                       data-linkedin="%9$s"
-                       data-website="%10$s">
-                      <td><img src="%6$s" alt="Profile of %1$s"></td>
-                      <td><strong>%1$s</strong></td>
-                      <td>%2$s</td>
-                      <td>%4$s</td>
-                      <td><a href="mailto:%3$s">%3$s</a></td>
-                  </tr>',
-                    esc_attr("$first $last"),
-                    esc_attr($title),
-                    esc_attr($email),
-                    esc_attr($dept),
-                    esc_attr($bio),
-                    esc_url($img_url),
-                    esc_attr($d_slug),
-                    esc_attr($pronouns),
-                    esc_attr($linkedin), 
-                    esc_url($website) 
-                );
-            endwhile;
-            wp_reset_postdata();
-        endif;
+$table_rows .= '<tr class="open-profile-modal" role="button" tabindex="0" aria-label="View ' . esc_attr("$first $last") . '’s profile"'
+    . ' data-name="' . esc_attr("$first $last") . '"'
+    . ' data-title="' . esc_attr($title) . '"'
+    . ' data-email="' . esc_attr($email) . '"'
+    . ' data-department="' . esc_attr($dept) . '"'
+    . ' data-bio="' . esc_attr($bio) . '"'
+    . ' data-img="' . esc_url($img_url) . '"'
+    . ' data-department-slug="' . esc_attr($d_slug) . '"'
+    . ' data-pronouns="' . esc_attr($pronouns) . '"'
+    . ' data-linkedin="' . esc_attr($linkedin) . '"'
+    . ' data-website="' . esc_url($website) . '">'
+    . '<td><img src="' . esc_url($img_url) . '" alt="Profile of ' . esc_attr("$first $last") . '"></td>'
+    . '<td><strong>' . esc_html("$first $last") . '</strong></td>'
+    . '<td>' . esc_html($title) . '</td>'
+    . '<td>' . esc_html($dept) . '</td>'
+    . '<td><a href="mailto:' . esc_attr($email) . '">' . esc_html($email) . '</a></td>'
+    . '</tr>';
+endwhile;
+wp_reset_postdata();
+endif;
 
-        echo "</div></div>";
-        ?>
-       <div id="tab-two" class="tab-content" style="display:none;">
+echo "</div></div>";
+?>
+
+<div id="tab-two" class="tab-content" style="display:none;">
     <div id="directory-table-wrapper" class="table-responsive-sm">
         <label class="section-label table-instruction">Click a row to view the full profile</label>
         <table class="directory-table">
@@ -436,7 +425,7 @@ data-bio="<?php echo esc_attr( $bio_html ); ?>"  data-img="<?php echo $img_url; 
         </table>
     </div>
 </div>
-      
+
 
         <!-- Bio modal -->     
 <div id="profile-modal" class="uw-modal"style="display: none;"  tabindex="-1" >
@@ -446,33 +435,27 @@ data-bio="<?php echo esc_attr( $bio_html ); ?>"  data-img="<?php echo $img_url; 
       <div class="folklore-modal-left">
         <img id="modal-img" src="" alt="Profile Image" class="modal-photo" />
         <div class="modal-contact horizontal-modal-footer" aria-hidden="false">
-    <h3 class="h3">Connect</h3>
-    <?php if (!empty($email)) : ?>
-        <div class="contact-item">
-            <i class="fa-solid fa-envelope"></i>
-            <a class="modal-email" href="mailto:<?php echo esc_attr($email); ?>" target="_blank">
-                <span class="email-text">Email</span>
-            </a>
-        </div>
-    <?php endif; ?>
-    
-    <?php if (!empty($linkedin)) : ?>
-        <div class="contact-item">
-            <i class="fa-brands fa-linkedin"></i>
-            <a class="modal-linkedin" href="https://linkedin.com/in/<?php echo esc_attr($linkedin); ?>" target="_blank">
-                <span>LinkedIn</span>
-            </a>
-        </div>
-    <?php endif; ?>
-    
-    <?php if (!empty($website)) : ?>
-        <div class="contact-item">
-            <i class="fa-solid fa-globe"></i>
-            <a class="modal-website" href="<?php echo esc_url($website); ?>" target="_blank">
-                <span>Website</span>
-            </a>
-        </div>
-    <?php endif; ?>
+
+  <h3 class="h3">Connect</h3>
+  <div class="contact-item">
+    <i class="fa-solid fa-envelope"></i>
+    <a class="modal-email" href="" target="_blank">
+      <span class="email-text">Email</span>
+    </a>
+  </div>
+  <div class="contact-item" id="linkedin-item" style="display: none;">
+    <i class="fa-brands fa-linkedin"></i>
+    <a class="modal-linkedin" href="" target="_blank">
+      <span>LinkedIn</span>
+    </a>
+  </div>
+  <div class="contact-item" id="website-item" style="display: none;">
+    <i class="fa-solid fa-globe"></i>
+    <a class="modal-website" href="" target="_blank">
+      <span>Website</span>
+    </a>
+  </div>
+
 </div>
 
       </div>
