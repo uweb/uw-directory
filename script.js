@@ -157,9 +157,14 @@ jQuery(document).ready(function ($) {
       hideDropdownOption(currentDeptFilter);
       applyFilters();
 
-      bootstrap.Dropdown.getOrCreateInstance(
-        document.getElementById("dropdownMenuButton")
-      ).toggle();
+     const dropdownEl = document.getElementById('dropdownMenuButton');
+
+// works even if getOrCreateInstance is missing (older Bootstrap)
+let dd = bootstrap.Dropdown?.getInstance?.(dropdownEl);
+if (!dd) {
+  dd = new bootstrap.Dropdown(dropdownEl);
+}
+dd.hide();  
     }
   );
 
@@ -282,6 +287,10 @@ jQuery(document).ready(function ($) {
     if (window.Calendly?.initInlineWidgets) {
       Calendly.initInlineWidgets();
     }
+        $(".modal-contact").each(function () {
+  const hasItems = $(this).find(".contact-item").length > 0;
+  $(this).find("h3").toggle(hasItems);   // show connect text only when linkiend/email/website is present
+    });
 
     $("#profile-modal").fadeIn(() => {
       const modal = document.getElementById("profile-modal");
@@ -295,7 +304,17 @@ jQuery(document).ready(function ($) {
     });
 
   });
+/* --- close modal when user clicks on the backdrop --- */
+function closeModal() {
+  $("#profile-modal").fadeOut();
+}
 
+$(document).on("click", "#profile-modal", function (e) {
+  // Only close if the backdrop itself (not the inner content) was clicked
+  if (e.target === this) {
+    closeModal();
+  }
+});
   $(document).on("click", ".folklore-modal-close", () =>
     $("#profile-modal").fadeOut()
   );
@@ -317,12 +336,7 @@ jQuery(document).ready(function ($) {
   applyFilters();
 });
 
-$(document).on("keydown", "#profile-modal", function (e) {
-  if (e.key === "Tab") {
-    e.preventDefault();
-    $(this).find(".folklore-modal-close").focus();
-  }
-});
+
 
 function switchToTab(tabId) {
   $(".tab-button").removeClass("active");

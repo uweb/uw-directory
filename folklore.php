@@ -148,7 +148,7 @@ function uw_directory_enqueue_scripts()
     wp_enqueue_script(
         "uw-directory-script",
         plugins_url("/script.js", __FILE__),
-        ["jquery", "isotope-js"],
+        ["jquery", 'bootstrap-js', "isotope-js"],
         null,
         true
     );
@@ -430,7 +430,7 @@ echo "</div></div>";
         <!-- Bio modal -->     
 <div id="profile-modal" class="uw-modal"style="display: none;"  tabindex="-1" >
   <div class="folklore-modal-content">
-    <button type="button" class="folklore-modal-close" aria-label="Close" onclick="closeModal()">&times;</button>
+    <button type="button" class="folklore-modal-close" aria-label="Close">&times;</button>
     <div class="folklore-modal-body">
       <div class="folklore-modal-left">
         <img id="modal-img" src="" alt="Profile Image" class="modal-photo" />
