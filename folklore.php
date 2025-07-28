@@ -344,7 +344,7 @@ function uw_directory_shortcode()
                      data-department="<?php echo esc_attr($d_slug); ?>">
                      <img src="<?php echo $img_url; ?>" alt="Profile Image" class="uw-card-img"/>
                     <div class="uw-card-text"><span>
-                        <h2 class="h2"><?php echo esc_html(
+                        <h2 class="h2 card-name"><?php echo esc_html(
                             "$first $last"
                         ); ?></h2>
                         <div class="udub-slant-divider white"><span></span></div>
@@ -352,6 +352,7 @@ function uw_directory_shortcode()
                        <p class="title"><?php echo esc_html(
                             $title
                         ); ?></p>
+                 
                         <p class="department"><?php echo esc_html(
                             $dept
                         ); ?></p>
@@ -465,7 +466,7 @@ echo "</div></div>";
         <p id="modal-title" class="modal-subtitle"></p>
         <p id="modal-department" class="modal-dept"></p>
         <div id="modal-bio" class="modal-bio"></div>
-        <span id="bio-toggle" class="see-more-link" hidden>See more</span>
+        <span id="bio-toggle" tabindex="0" role="button" class="see-more-link" hidden>See more</span>
 
       </div>
     </div>

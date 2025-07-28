@@ -16,6 +16,33 @@ jQuery(document).ready(function ($) {
 
     $("#no-results-message").toggle(noResults);
   }
+  function updateTitleTooltips() {
+  $('.uw-card .title').each(function () {
+    const isClamped = this.scrollHeight > this.clientHeight + 1; // +1 avoids false hits
+    if (isClamped) {
+      $(this).attr('title', $(this).text().trim());
+    } else {
+      $(this).removeAttr('title');
+    }
+  });
+}
+
+function fitNames() {
+  const BASE_SIZE = 24;  
+  const MIN_SIZE  = 14;  
+
+  $('.uw-card .card-name').each(function () {
+    const $el = $(this);
+    $el.css('font-size', BASE_SIZE + 'px');       // reset
+
+    while (this.scrollHeight > this.clientHeight &&
+           parseFloat($el.css('font-size')) > MIN_SIZE) {
+      $el.css('font-size',
+        (parseFloat($el.css('font-size')) - 0.5) + 'px');
+    }
+  });
+}
+
   function updateSearchButtonState() {
     const searchText = $("#searchbar").val().trim();
     $("#searchsubmit").prop("disabled", searchText === "");
@@ -137,6 +164,8 @@ jQuery(document).ready(function ($) {
     restyleTableStripes();
     updateResultsCount();
     updateClearFiltersButton();
+    updateTitleTooltips(); 
+    fitNames(); 
 
   }
 
@@ -193,6 +222,10 @@ dd.hide();
       $("#directory-table-wrapper tbody tr:visible").length
     );
   });
+  $grid.on("arrangeComplete", updateTitleTooltips);
+  $grid.on('arrangeComplete', fitNames);
+
+
 
   // ONE single handler for opening profile modal
   $(document).on("click", ".open-profile-modal", function () {
@@ -270,6 +303,11 @@ dd.hide();
     requestAnimationFrame(() => {
       const overflowing = bioEl.scrollHeight > bioEl.clientHeight + 2;
       toggle.hidden = !overflowing;
+       if (overflowing) {
+    bioEl.classList.add('clamped');
+  } else {
+    bioEl.classList.remove('clamped');
+  }
     });
 
     $("#bio-toggle")
@@ -291,7 +329,12 @@ dd.hide();
   const hasItems = $(this).find(".contact-item").length > 0;
   $(this).find("h3").toggle(hasItems);   // show connect text only when linkiend/email/website is present
     });
-
+$(document).on('keydown', '#bio-toggle', function (e) {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    $(this).click();
+  }
+});
     $("#profile-modal").fadeIn(() => {
       const modal = document.getElementById("profile-modal");
       modal.focus();
@@ -304,13 +347,12 @@ dd.hide();
     });
 
   });
-/* --- close modal when user clicks on the backdrop --- */
+/* close modal when user clicks on the backdrop --- */
 function closeModal() {
   $("#profile-modal").fadeOut();
 }
 
 $(document).on("click", "#profile-modal", function (e) {
-  // Only close if the backdrop itself (not the inner content) was clicked
   if (e.target === this) {
     closeModal();
   }
@@ -334,6 +376,12 @@ $(document).on("click", "#profile-modal", function (e) {
   setViewButton("grid");
   hideDropdownOption("*");
   applyFilters();
+ $(window).on("resize", updateTitleTooltips);
+ $(window).on('resize', fitNames);
+ $(window).on('resize', () => {
+  $grid.isotope('layout');  
+});
+
 });
 
 
