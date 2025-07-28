@@ -385,7 +385,10 @@
       border: 1px solid #e8e3d3;
       box-shadow: none;
     }
-
+#searchsubmit.clicked {
+  border: 2px solid #ffd200;  /* yellow */
+  box-shadow: 0 0 0 2px #ffd200;
+}
     /* Search button base style */
     #searchsubmit {
       position: absolute;
@@ -793,6 +796,7 @@
       width: 100px;
       height: 100px;
       object-fit: cover;
+      min-width: 100px; 
     }
 
     tbody tr {

@@ -384,6 +384,9 @@ data-bio="<?php echo esc_attr( $bio_html ); ?>"  data-img="<?php echo $img_url; 
                     </span></div>
                 </div>
                 <?php /* ----- List View  ----- */
+                $email_html = $email
+                  ? '<a href="mailto:' . esc_attr( $email ) . '">' . esc_html( $email ) . '</a>'
+                  : '';   
 $table_rows .= '<tr class="open-profile-modal" role="button" tabindex="0" aria-label="View ' . esc_attr("$first $last") . '’s profile"'
     . ' data-name="' . esc_attr("$first $last") . '"'
     . ' data-title="' . esc_attr($title) . '"'
@@ -399,7 +402,7 @@ $table_rows .= '<tr class="open-profile-modal" role="button" tabindex="0" aria-l
     . '<td><strong>' . esc_html("$first $last") . '</strong></td>'
     . '<td>' . esc_html($title) . '</td>'
     . '<td>' . esc_html($dept) . '</td>'
-    . '<td><a href="mailto:' . esc_attr($email) . '">' . esc_html($email) . '</a></td>'
+    . '<td>' . $email_html        . '</td>'  
     . '</tr>';
 endwhile;
 wp_reset_postdata();

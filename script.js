@@ -18,7 +18,7 @@ jQuery(document).ready(function ($) {
   }
   function updateTitleTooltips() {
   $('.uw-card .title').each(function () {
-    const isClamped = this.scrollHeight > this.clientHeight + 1; // +1 avoids false hits
+    const isClamped = this.scrollHeight > this.clientHeight + 1; 
     if (isClamped) {
       $(this).attr('title', $(this).text().trim());
     } else {
@@ -174,21 +174,22 @@ function fitNames() {
     applyFilters();
   });
 
-
+$(".searchbox").on("submit", function (e) {
+  e.preventDefault();
+});
   $(".custom-dropdown .dropdown-menu").on(
     "click",
     ".dropdown-item",
     function (e) {
       e.preventDefault();
 
-      currentDeptFilter = $(this).data("filter"); // store slug or "*"
+      currentDeptFilter = $(this).data("filter");
       $("#dropdown-label").text($(this).data("value"));
       hideDropdownOption(currentDeptFilter);
       applyFilters();
 
      const dropdownEl = document.getElementById('dropdownMenuButton');
 
-// works even if getOrCreateInstance is missing (older Bootstrap)
 let dd = bootstrap.Dropdown?.getInstance?.(dropdownEl);
 if (!dd) {
   dd = new bootstrap.Dropdown(dropdownEl);

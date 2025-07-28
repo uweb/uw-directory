@@ -1,8 +1,8 @@
 ﻿# Folklore Plugin
 
-_Displays a searchable, filterable directory of people with grid/list views and profile modals._
+_ Plugin to displays a searchable, filterable directory of people with grid/list views and profile modals._
 
----
+
 
 ## Features
 
@@ -22,7 +22,7 @@ _Displays a searchable, filterable directory of people with grid/list views and 
   Built-in ARIA labels and keyboard navigation.  
   Responsive layouts for mobile, tablet, and desktop.
 
----
+
 
 ## Installation
 
@@ -36,7 +36,7 @@ _Displays a searchable, filterable directory of people with grid/list views and 
 3. **Install Required Plugins**
    - Make sure **UW Storytelling Modules** *or* **Advanced Custom Fields Pro (ACF Pro)** is active for custom field functionality.
 
----
+
 
 ## Usage
 
@@ -59,7 +59,7 @@ _Displays a searchable, filterable directory of people with grid/list views and 
 
    - Both shortcodes render the directory.
 
----
+
 
 ## Developer Customization
 
@@ -67,7 +67,8 @@ _Displays a searchable, filterable directory of people with grid/list views and 
   Extend or modify fields via ACF Pro using the field group `group_67ae559c84ef4`.
 
 - **Styling:**  
-  Customize styles in `folklore.css`, or enqueue your own stylesheet for overrides.
+ Modify `folklore.scss` to change the look and feel, or enqueue your own stylesheet to override the defaults. After editing the styles, run npx gulp to rebuild the CSS before refreshing the browser.
+
 
 - **Scripts:**  
   Custom JavaScript lives in `script.js`. You can extend or override functionality by enqueuing additional scripts.
@@ -76,14 +77,14 @@ _Displays a searchable, filterable directory of people with grid/list views and 
   Uses CDN-hosted Bootstrap, FontAwesome, Bootstrap Icons, and Isotope.js.  
   Swap these out with local assets if needed.
 
----
+
 
 ## Notes
 
 - The plugin includes accessibility and responsive design features, but you should still test it against your theme.
 - **Bio character limit:** Keep bios under **1000 characters**, including spaces to prevent layout issues.
 
----
+
 
 
 
