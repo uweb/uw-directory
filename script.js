@@ -174,9 +174,7 @@ function fitNames() {
     applyFilters();
   });
 
-$(".searchbox").on("submit", function (e) {
-  e.preventDefault();
-});
+
   $(".custom-dropdown .dropdown-menu").on(
     "click",
     ".dropdown-item",
@@ -205,7 +203,18 @@ dd.hide();
 
   });
 
+$(".searchbox").on("submit", function (e) {
+  e.preventDefault();
 
+  const btn = $("#searchsubmit");
+  btn.addClass("clicked");      
+  applyFilters();            
+
+  setTimeout(() => {
+    btn.removeClass("clicked"); 
+    btn.blur();                
+  }, 150);
+});
   $("#gridViewBtn").on("click", () => {
     switchToTab("tab-one");
     setViewButton("grid");

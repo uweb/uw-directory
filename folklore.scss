@@ -385,11 +385,12 @@
       border: 1px solid #e8e3d3;
       box-shadow: none;
     }
-#searchsubmit.clicked {
-  border: 2px solid #ffd200;  /* yellow */
-  box-shadow: 0 0 0 2px #ffd200;
-}
-    /* Search button base style */
+      #searchsubmit.clicked {
+        border: 2px solid #85754d !important;
+        box-shadow: 0 0 0 2px #85754d !important;
+      }
+
+
     #searchsubmit {
       position: absolute;
       right: 0;
@@ -472,8 +473,7 @@
     font-size: 24px;
     font-weight: bold;
   }
-
-  /* Responsive fallback */
+/* Responsive fallback */
   @media (max-width: 768px) {
     .uw-card {
       flex: 1 1 100%;
@@ -494,8 +494,6 @@
       align-items: flex-start;
     }
   }
-
-  /* Modal for profile view */
   .uw-modal {
     display: none;
     position: fixed;
@@ -830,7 +828,9 @@
     display: flex !important;
     flex-wrap: wrap !important;
   }
-
+.folklore-box.search {
+    width: 275px;
+}
   .uw-card {
     flex: 0 0 100% !important;
     max-width: 100% !important;
@@ -871,4 +871,11 @@
     width: 100%;
     min-width: 600px;
   }
+}
+
+@media (max-width: 1176px) and (min-width: 590px) {
+ 
+}
+
+@media (max-width: 589px) {
 }
