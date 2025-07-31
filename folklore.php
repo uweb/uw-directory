@@ -344,7 +344,7 @@ function uw_directory_shortcode()
                      data-department="<?php echo esc_attr($d_slug); ?>">
                      <img src="<?php echo $img_url; ?>" alt="Profile Image" class="uw-card-img"/>
                     <div class="uw-card-text"><span>
-                        <h2 class="h2 card-name"><?php echo esc_html(
+                     <h2 class="h2"><?php echo esc_html(
                             "$first $last"
                         ); ?></h2>
                         <div class="udub-slant-divider white"><span></span></div>
@@ -465,7 +465,7 @@ echo "</div></div>";
       </div>
       <div class="folklore-modal-right">
         <h2 id="modal-name"></h2>
-        <p id="modal-pronouns" class="modal-pronouns" style="margin-top: -0.5rem; color: #666;"></p>
+        <p id="modal-pronouns" class="modal-pronouns" style="color: #666;"></p>
         <p id="modal-title" class="modal-subtitle"></p>
         <p id="modal-department" class="modal-dept"></p>
         <div id="modal-bio" class="modal-bio"></div>

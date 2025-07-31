@@ -16,32 +16,21 @@ jQuery(document).ready(function ($) {
 
     $("#no-results-message").toggle(noResults);
   }
-  function updateTitleTooltips() {
-  $('.uw-card .title').each(function () {
-    const isClamped = this.scrollHeight > this.clientHeight + 1; 
-    if (isClamped) {
-      $(this).attr('title', $(this).text().trim());
-    } else {
-      $(this).removeAttr('title');
-    }
+
+function setEqualCardHeights () {
+  let tallest = 0;
+
+  jQuery('.uw-card').each(function () {
+    const h = jQuery(this).outerHeight();
+    if (h > tallest) tallest = h;
   });
+
+  jQuery('.uw-card')
+    .css('height',  tallest + 'px')
+    .find('.uw-card-img')
+    .css('height',  tallest + 'px');
 }
 
-function fitNames() {
-  const BASE_SIZE = 24;  
-  const MIN_SIZE  = 14;  
-
-  $('.uw-card .card-name').each(function () {
-    const $el = $(this);
-    $el.css('font-size', BASE_SIZE + 'px');       // reset
-
-    while (this.scrollHeight > this.clientHeight &&
-           parseFloat($el.css('font-size')) > MIN_SIZE) {
-      $el.css('font-size',
-        (parseFloat($el.css('font-size')) - 0.5) + 'px');
-    }
-  });
-}
 
   function updateSearchButtonState() {
     const searchText = $("#searchbar").val().trim();
@@ -164,8 +153,7 @@ function fitNames() {
     restyleTableStripes();
     updateResultsCount();
     updateClearFiltersButton();
-    updateTitleTooltips(); 
-    fitNames(); 
+ 
 
   }
 
@@ -232,8 +220,8 @@ $(".searchbox").on("submit", function (e) {
       $("#directory-table-wrapper tbody tr:visible").length
     );
   });
-  $grid.on("arrangeComplete", updateTitleTooltips);
-  $grid.on('arrangeComplete', fitNames);
+
+  $grid.on('arrangeComplete', setEqualCardHeights);
 
 
 
@@ -345,6 +333,8 @@ $(document).on('keydown', '#bio-toggle', function (e) {
     $(this).click();
   }
 });
+  $(window).on('load', setEqualCardHeights);
+
     $("#profile-modal").fadeIn(() => {
       const modal = document.getElementById("profile-modal");
       modal.focus();
@@ -357,8 +347,8 @@ $(document).on('keydown', '#bio-toggle', function (e) {
     });
 
   });
-/* close modal when user clicks on the backdrop --- */
-function closeModal() {
+
+  function closeModal() {
   $("#profile-modal").fadeOut();
 }
 
@@ -386,8 +376,6 @@ $(document).on("click", "#profile-modal", function (e) {
   setViewButton("grid");
   hideDropdownOption("*");
   applyFilters();
- $(window).on("resize", updateTitleTooltips);
- $(window).on('resize', fitNames);
  $(window).on('resize', () => {
   $grid.isotope('layout');  
 });
