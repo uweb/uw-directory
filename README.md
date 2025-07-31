@@ -1,6 +1,6 @@
 ﻿# Folklore Plugin
 
-_ Plugin to displays a searchable, filterable directory of people with grid/list views and profile modals._
+Plugin to displays a searchable, filterable directory of people with grid/list views and profile modals.
 
 
 
@@ -67,7 +67,7 @@ _ Plugin to displays a searchable, filterable directory of people with grid/list
   Extend or modify fields via ACF Pro using the field group `group_67ae559c84ef4`.
 
 - **Styling:**  
- Modify `folklore.scss` to change the look and feel, or enqueue your own stylesheet to override the defaults. After editing the styles, run npx gulp to rebuild the CSS before refreshing the browser.
+ Modify `folklore.scss` to change the look and feel, or enqueue your own stylesheet to override the defaults. After editing the styles, run `npx gulp` to rebuild the CSS before refreshing the browser.
 
 
 - **Scripts:**  
@@ -82,7 +82,7 @@ _ Plugin to displays a searchable, filterable directory of people with grid/list
 ## Notes
 
 - The plugin includes accessibility and responsive design features, but you should still test it against your theme.
-- **Bio character limit:** Keep bios under **1000 characters**, including spaces to prevent layout issues.
+- Keep bios under **1000 characters**, including spaces to prevent layout issues.
 
 
 

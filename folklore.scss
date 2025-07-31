@@ -102,7 +102,7 @@
   .modal-subtitle {
      margin: 0px 0;     
     font-weight: bold;
-    margin-bottom: 0.5rem;
+    margin-bottom: -2px;;
   }
 
   .modal-photo {
@@ -134,7 +134,7 @@
 
 
   #modal-bio {
-    max-height: 11.5em;
+    max-height: 12em;
     /* 6 lines   */
     overflow: hidden;
     position: relative;
@@ -188,7 +188,7 @@
   }
   .modal-pronouns {
     font-style: italic;
-    margin: 0px 0 4px;     
+    margin: -4px 0 4px;     
     color: #666;
     
   }
