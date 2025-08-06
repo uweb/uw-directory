@@ -1,13 +1,34 @@
 jQuery(document).ready(function ($) {
-  const $grid = $("#directory-container").isotope({
+
+ /* ----------  Initialization ---------- */
+   const $grid = $("#directory-container").isotope({
     itemSelector: ".uw-card",
     layoutMode: "fitRows",
     transitionDuration: "0.4s",
   });
 
-  let currentDeptFilter = "*";
+  let currentDeptFilter = "*"; 
+ /* ----------  Utility functions ---------- */
+// setEqualCardHeights
+function setEqualCardHeights () {
+ if (window.innerWidth < 730) {
+    // Reset any inline height styles
+    $('.uw-card, .uw-card-img').css('height', '');
+    return;
+  }
 
-  function updateNoResults(gridMatches, tableMatches) {
+  let tallest = 0;
+
+  $('.uw-card').each(function () {
+    const h = $(this).outerHeight();
+    if (h > tallest) tallest = h;
+  });
+
+  $('.uw-card').css('height', tallest + 'px');
+  $('.uw-card-img').css('height', '100%'); 
+}
+// updateNoResults
+function updateNoResults(gridMatches, tableMatches) {
     const noResults = gridMatches === 0 && tableMatches === 0;
 
     if ($("#tab-two").is(":visible")) {
@@ -16,27 +37,54 @@ jQuery(document).ready(function ($) {
 
     $("#no-results-message").toggle(noResults);
   }
+// updateResultsCount
 
-function setEqualCardHeights () {
-  let tallest = 0;
+  function updateResultsCount() {
+    const gridCount = $grid.data("isotope").filteredItems.length;
+    const tableCount = $("#directory-table-wrapper tbody tr:visible").length;
+    const totalCount = Math.max(gridCount, tableCount);
+    updateNoResults(gridCount, tableCount);
 
-  jQuery('.uw-card').each(function () {
-    const h = jQuery(this).outerHeight();
-    if (h > tallest) tallest = h;
-  });
+    $("#results-count").text(
+      `${totalCount} result${totalCount === 1 ? "" : "s"} found`
+    );
+  }
+// restyleTableStripes
+ function restyleTableStripes() {
+    $("#directory-table-wrapper tbody tr:visible")
+      .removeClass("odd even")
+      .each(function (i) {
+        $(this).addClass(i % 2 ? "even" : "odd");
+      });
+  }
 
-  jQuery('.uw-card')
-    .css('height',  tallest + 'px')
-    .find('.uw-card-img')
-    .css('height',  tallest + 'px');
-}
-
-
-  function updateSearchButtonState() {
+// hideDropdownOption
+  function hideDropdownOption(filterValue) {
+    const $lis = $(".custom-dropdown .dropdown-menu li");
+    $lis
+      .show()
+      .filter(function () {
+        return $(this).find(".dropdown-item").data("filter") === filterValue;
+      })
+      .hide();
+  }
+// updateSearchButtonState
+ function updateSearchButtonState() {
     const searchText = $("#searchbar").val().trim();
     $("#searchsubmit").prop("disabled", searchText === "");
   }
-  updateSearchButtonState()
+// updateClearFiltersButton
+function updateClearFiltersButton() {
+    const searchText = $("#searchbar").val().trim();
+    const clearBtn = $(".clear-filters");
+
+    if (searchText || currentDeptFilter !== "*") {
+      clearBtn.show(); // Show button when filters are active
+    } else {
+      clearBtn.hide(); // Hide button when no filters are active
+    }
+  }
+// trapFocus                (modal a11y)
   function trapFocus(modalEl) {
     const focusableElements = modalEl.querySelectorAll(
       'a[href]:not([tabindex="-1"]), button:not([disabled]):not([tabindex="-1"]), [tabindex]:not([tabindex="-1"])'
@@ -63,46 +111,9 @@ function setEqualCardHeights () {
     });
   }
 
-  function updateResultsCount() {
-    const gridCount = $grid.data("isotope").filteredItems.length;
-    const tableCount = $("#directory-table-wrapper tbody tr:visible").length;
-    const totalCount = Math.max(gridCount, tableCount);
-    updateNoResults(gridCount, tableCount);
 
-    $("#results-count").text(
-      `${totalCount} result${totalCount === 1 ? "" : "s"} found`
-    );
-  }
-
-  function restyleTableStripes() {
-    $("#directory-table-wrapper tbody tr:visible")
-      .removeClass("odd even")
-      .each(function (i) {
-        $(this).addClass(i % 2 ? "even" : "odd");
-      });
-  }
-
-  function hideDropdownOption(filterValue) {
-    const $lis = $(".custom-dropdown .dropdown-menu li");
-    $lis
-      .show()
-      .filter(function () {
-        return $(this).find(".dropdown-item").data("filter") === filterValue;
-      })
-      .hide();
-  }
-  function updateClearFiltersButton() {
-    const searchText = $("#searchbar").val().trim();
-    const clearBtn = $(".clear-filters");
-
-    if (searchText || currentDeptFilter !== "*") {
-      clearBtn.show(); // Show button when filters are active
-    } else {
-      clearBtn.hide(); // Hide button when no filters are active
-    }
-  }
-
-  function applyFilters() {
+/* ----------  Core filtering logic ---------- */
+function applyFilters() {
     const searchText = $("#searchbar").val().toLowerCase();
     updateSearchButtonState();
     /* ----  Table rows  --------- */
@@ -156,7 +167,7 @@ function setEqualCardHeights () {
  
 
   }
-
+ /* ----------  Search / category / clear events ---------- */
   $("#searchbar").on("input", function () {
     updateSearchButtonState();
     applyFilters();
@@ -203,7 +214,9 @@ $(".searchbox").on("submit", function (e) {
     btn.blur();                
   }, 150);
 });
-  $("#gridViewBtn").on("click", () => {
+
+/* ----------  Grid ↔ List view-toggle events ---------- */
+ $("#gridViewBtn").on("click", () => {
     switchToTab("tab-one");
     setViewButton("grid");
     applyFilters();
@@ -214,6 +227,7 @@ $(".searchbox").on("submit", function (e) {
     applyFilters();
   });
 
+/* ----------  Isotope + resize bindings ---------- */
   $grid.on("arrangeComplete", (_, filteredItems) => {
     updateNoResults(
       filteredItems.length,
@@ -222,10 +236,12 @@ $(".searchbox").on("submit", function (e) {
   });
 
   $grid.on('arrangeComplete', setEqualCardHeights);
+   $(window).on('resize', () => {
+  $grid.isotope('layout');  
+});
+  $(window).on('load', setEqualCardHeights);
 
-
-
-  // ONE single handler for opening profile modal
+/* ----------  Modal logic & events ---------- */
   $(document).on("click", ".open-profile-modal", function () {
     const $this = $(this);
     const email = $this.data("email");
@@ -286,8 +302,6 @@ $(".searchbox").on("submit", function (e) {
 
 
     // Handle toggle visibility and bio toggle
-    $(".horizontal-modal-footer").hide();
-    $(".vertical-modal-footer").show();
 
     const bioEl = document.getElementById("modal-bio");
     const toggle = document.getElementById("bio-toggle");
@@ -301,11 +315,11 @@ $(".searchbox").on("submit", function (e) {
     requestAnimationFrame(() => {
       const overflowing = bioEl.scrollHeight > bioEl.clientHeight + 2;
       toggle.hidden = !overflowing;
-       if (overflowing) {
-    bioEl.classList.add('clamped');
-  } else {
-    bioEl.classList.remove('clamped');
-  }
+      if (overflowing) {
+        bioEl.classList.add('clamped');
+      } else {
+        bioEl.classList.remove('clamped');
+      }
     });
 
     $("#bio-toggle")
@@ -323,17 +337,17 @@ $(".searchbox").on("submit", function (e) {
     if (window.Calendly?.initInlineWidgets) {
       Calendly.initInlineWidgets();
     }
-        $(".modal-contact").each(function () {
-  const hasItems = $(this).find(".contact-item").length > 0;
-  $(this).find("h3").toggle(hasItems);   // show connect text only when linkiend/email/website is present
+    $(".modal-contact").each(function () {
+      const hasItems = $(this).find(".contact-item").length > 0;
+      $(this).find("h3").toggle(hasItems);   // show connect text only when linkiend/email/website is present
     });
-$(document).on('keydown', '#bio-toggle', function (e) {
-  if (e.key === 'Enter' || e.key === ' ') {
-    e.preventDefault();
-    $(this).click();
-  }
-});
-  $(window).on('load', setEqualCardHeights);
+    $(document).on('keydown', '#bio-toggle', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        $(this).click();
+      }
+    });
+
 
     $("#profile-modal").fadeIn(() => {
       const modal = document.getElementById("profile-modal");
@@ -357,7 +371,7 @@ $(document).on("click", "#profile-modal", function (e) {
     closeModal();
   }
 });
-  $(document).on("click", ".folklore-modal-close", () =>
+$(document).on("click", ".folklore-modal-close", () =>
     $("#profile-modal").fadeOut()
   );
 
@@ -371,18 +385,18 @@ $(document).on("click", "#profile-modal", function (e) {
   $(document).on("keydown", (e) => {
     if (e.key === "Escape") $("#profile-modal").fadeOut();
   });
-
+ /* ----------  Default state on first load ---------- */
+  
+  updateSearchButtonState()
   switchToTab("tab-one");
   setViewButton("grid");
   hideDropdownOption("*");
   applyFilters();
- $(window).on('resize', () => {
-  $grid.isotope('layout');  
-});
-
-});
 
 
+});      // end ready()
+
+/* ---- switchToTab + setViewButton helpers (outside ready if they’re reused) ---- */
 
 function switchToTab(tabId) {
   $(".tab-button").removeClass("active");

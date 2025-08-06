@@ -41,13 +41,6 @@
     margin-bottom: 8px;
   }
 
-
-
-
-
-
- 
-
   .bold {
     font-weight: bold;
     font-size: 16px;
@@ -60,9 +53,6 @@
     font-weight: 400;
     margin: 3px 0;
   }
-
-
-
 
   .folklore-modal-content {
     background: #fff;
@@ -131,8 +121,6 @@
     display: none;
   }
 
-
-
   #modal-bio {
     max-height: 12em;
     /* 6 lines   */
@@ -199,8 +187,6 @@
   .modal-bio {
     color: #333;
   }
-
- 
 
   .modal-contact p {
     margin: 0.25rem 0;
@@ -714,8 +700,7 @@
  .folklore-inner {
     margin-top: 14px;}
   .directory-table td:first-child img {
-    max-width: 80px;
-    height: 80px;
+    
     display: block !important;
   }
 
@@ -736,7 +721,7 @@
 
     .uw-card-img {
       width: 100%;
-      height: auto;
+      height: 330px;
     }
 
     .uw-card-text {
@@ -796,3 +781,14 @@
   }
 
 }
+
+//responsive modal footer
+@media (max-width: 830px) {
+  .horizontal-modal-footer {
+    display: none !important;
+  }
+  .vertical-modal-footer {
+    display: block !important;
+  }
+}
+

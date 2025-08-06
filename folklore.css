@@ -585,8 +585,6 @@
     margin-top: 14px;
   }
   .uw-directory .directory-table td:first-child img {
-    max-width: 80px;
-    height: 80px;
     display: block !important;
   }
   .uw-directory .directory-table td:first-child {
@@ -604,7 +602,7 @@
   }
   .uw-directory .uw-card-img {
     width: 100%;
-    height: auto;
+    height: 330px;
   }
   .uw-directory .uw-card-text {
     margin: 20px;
@@ -653,6 +651,14 @@
   .uw-directory:not(.has-sidebar) .uw-card {
     flex: 0 0 100%; /* one card per row */
     max-width: 100%;
+  }
+}
+@media (max-width: 830px) {
+  .horizontal-modal-footer {
+    display: none !important;
+  }
+  .vertical-modal-footer {
+    display: block !important;
   }
 }
 /*# sourceMappingURL=folklore.css.map */
