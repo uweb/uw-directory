@@ -1,9 +1,9 @@
 <?php
 /*
-Plugin Name: Folklore Plugin
+Plugin Name: UW Directory Plugin
 Description: Displays UW directory with filtering, searching, and grid/list views.
 Version: 1.0
-Author: UW
+Author: UW Web Strategy Team
 */
 
 if (!defined("ABSPATH")) {
