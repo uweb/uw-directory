@@ -72,7 +72,7 @@ function uw_directory_check_acf()
         "uw-storytelling-modules-main/class-uw-storytelling-modules.php", // this one may exist in the future if we change from master to main.
     ];
 
-    if (is_plugin_active("advanced-custom-fields/acf.php")) { ?>
+    if ( !class_exists('acf_pro') && class_exists('acf') ) { ?>
 				<div class="notice notice-error">
 					<p><?php esc_html_e(
          "UW Folklore requires Advanced Custom Fields Pro or UW Storytelling Modules. It looks like you're using Advanced Custom Fields (not pro). Please deactivate Advanced Custom Fields and activate Advanced Custom Fields Pro or Storytelling Modules instead.",
@@ -81,13 +81,9 @@ function uw_directory_check_acf()
 				</div>
 				<?php return;}
 
-    foreach ($all_plugins as $plugin) {
-        // if any of these plugins are active, then we are all set.
-        if (is_plugin_active($plugin)) {
-            // all good to go!
+    if ( class_exists('acf_pro') && class_exists('acf') ) {
             return;
         }
-    }
     // if we get here, we're out of checks and need either ACF Pro or STM activated.
     ?>
 				<div class="notice notice-error">
