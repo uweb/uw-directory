@@ -27,11 +27,13 @@ function register_directory_post_type()
             "all_items" => "All Directory Entries",
             "menu_name" => "Directory",
         ],
+        "exclude_from_search" => true,
         "public" => true,
         "has_archive" => true,
         "menu_icon" => "dashicons-id",
         "supports" => ["title", "editor"],
-        "show_in_rest" => true,
+        "show_in_rest" => false,
+        "show_in_nav_menus" => false,
     ];
 
     register_post_type("directory_entry", $args);
@@ -59,36 +61,20 @@ function uw_register_department_taxonomy()
 }
 
 /**
- * Check to see if ACF Pro, STM, or ACF is active. If ACF not Pro is active, show error. If none are active, show error.
+ * Check to see if ACF or STM is active. If ACF is not active, show error.
  */
 function uw_directory_check_acf()
 {
-    // list of acceptable plugins to get ACF Pro
-    $all_plugins = [
-        "advanced-custom-fields-pro/acf.php",
-        "uw-storytelling-modules/class-uw-storytelling-modules.php",
-        "uw-storytelling-modules-master/class-uw-storytelling-modules.php",
-        "uw-storytelling-modules-develop/class-uw-storytelling-modules.php",
-        "uw-storytelling-modules-main/class-uw-storytelling-modules.php", // this one may exist in the future if we change from master to main.
-    ];
 
-    if ( !class_exists('acf_pro') && class_exists('acf') ) { ?>
-				<div class="notice notice-error">
-					<p><?php esc_html_e(
-         "UW Folklore requires Advanced Custom Fields Pro or UW Storytelling Modules. It looks like you're using Advanced Custom Fields (not pro). Please deactivate Advanced Custom Fields and activate Advanced Custom Fields Pro or Storytelling Modules instead.",
-         "uw-directory"
-     ); ?></p>
-				</div>
-				<?php return;}
 
-    if ( class_exists('acf_pro') && class_exists('acf') ) {
+    if ( class_exists('acf') ) {
             return;
         }
-    // if we get here, we're out of checks and need either ACF Pro or STM activated.
+    // if we get here, we're out of checks and need either ACF or STM activated.
     ?>
 				<div class="notice notice-error">
 					<p><?php esc_html_e(
-         "UW Folklore requires Advanced Custom Fields Pro or UW Storytelling Modules. Please activate Advanced Custom Fields Pro or UW Storytelling Modules.",
+         "UW Folklore requires Advanced Custom Fields or UW Storytelling Modules. Please activate Advanced Custom Fields or UW Storytelling Modules.",
          "uw-directory"
      ); ?></p>
 				</div>
@@ -96,6 +82,7 @@ function uw_directory_check_acf()
 }
 
 add_action("init", "register_directory_post_type");
+
 // save and load acf json for this plugin.
 add_filter(
     "acf/settings/save_json/key=group_67ae559c84ef4",
@@ -337,7 +324,8 @@ function uw_directory_shortcode()
                      data-name="<?php echo esc_attr("$first $last"); ?>"
                      
                      data-email="<?php echo esc_attr($email); ?>"
-                     data-department="<?php echo esc_attr($d_slug); ?>">
+                     data-department="<?php echo esc_attr($d_slug); ?>"
+                     data-title="<?php echo esc_attr($title); ?>">
                      <img src="<?php echo $img_url; ?>" alt="Profile Image" class="uw-card-img"/>
                     <div class="uw-card-text"><span>
                      <h2 class="h2"><?php echo esc_html(

@@ -125,10 +125,12 @@ function applyFilters() {
       const name = $(this).data("name")?.toLowerCase() || "";
       const email = $(this).data("email")?.toLowerCase() || "";
       const dept = $(this).data("department")?.toLowerCase() || "";
+      const role = $(this).data("title")?.toLowerCase() || "";
 
       const searchMatch =
         name.includes(searchText) ||
         email.includes(searchText) ||
+        role.includes(searchText) ||
         dept.includes(searchText);
       $(this).toggle(deptMatch && searchMatch);
     });
@@ -143,10 +145,12 @@ function applyFilters() {
         const name = $(this).data("name")?.toLowerCase() || "";
         const email = $(this).data("email")?.toLowerCase() || "";
         const dept = $(this).data("department")?.toLowerCase() || "";
+        const role = $(this).data("title")?.toLowerCase() || "";
 
         const searchMatch =
           name.includes(searchText) ||
           email.includes(searchText) ||
+          role.includes(searchText) ||
           dept.includes(searchText);
         return cardDeptMatch && searchMatch;
       },
