@@ -266,6 +266,7 @@ $(".searchbox").on("submit", function (e) {
     $("#modal-department").text(department);
     $("#modal-bio").html(bio);
     $("#modal-img").attr("src", img);
+    $("#modal-img").attr("alt", `Profile image of ${name}`);
 
     $(".modal-email").attr("href", `mailto:${email}`);
     $(".modal-email .email-text").text(email || "Email");

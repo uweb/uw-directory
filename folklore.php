@@ -326,7 +326,7 @@ function uw_directory_shortcode()
                      data-email="<?php echo esc_attr($email); ?>"
                      data-department="<?php echo esc_attr($d_slug); ?>"
                      data-title="<?php echo esc_attr($title); ?>">
-                     <img src="<?php echo $img_url; ?>" alt="Profile Image" class="uw-card-img"/>
+                     <img src="<?php echo $img_url; ?>" alt="Profile Image of <?php echo esc_attr("$first $last"); ?>" class="uw-card-img"/>
                     <div class="uw-card-text"><span>
                      <h2 class="h2"><?php echo esc_html(
                             "$first $last"
@@ -421,7 +421,7 @@ echo "</div></div>";
     <button type="button" class="folklore-modal-close" aria-label="Close">&times;</button>
     <div class="folklore-modal-body">
       <div class="folklore-modal-left">
-        <img id="modal-img" src="" alt="Profile Image" class="modal-photo" />
+        <img id="modal-img" src="" alt="Profile Image of" class="modal-photo" />
         <div class="modal-contact horizontal-modal-footer" aria-hidden="false">
 
   <h3 class="h3">Connect</h3>
