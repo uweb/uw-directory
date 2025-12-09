@@ -5,6 +5,15 @@
   z-index: 2;
   background: white;
   /* Typography*/
+  /* Modal*/
+  /* Filters*/
+  /* Categories dropdown*/
+  /* Layout for filter/search boxes */
+  /* Category button styling */
+  /* Search box styling */
+  /* Directory container */
+  /* grid view */
+  /* Table list view styling */
 }
 .uw-directory .fa-solid {
   margin-right: 10px;
@@ -21,9 +30,6 @@
   font-size: 24px;
   font-weight: bold;
   color: white;
-}
-.uw-directory {
-  /* Modal*/
 }
 .uw-directory .modal-contact a,
 .uw-directory .modal-contact span {
@@ -173,9 +179,6 @@
   background-color: #eee7d9;
   padding: 1.5rem;
 }
-.uw-directory {
-  /* Filters*/
-}
 .uw-directory .section-label {
   display: block;
   margin-bottom: 0px;
@@ -194,14 +197,15 @@
   color: #666;
   line-height: 1.2;
 }
-.uw-directory {
-  /* Categories dropdown*/
-}
 .uw-directory .custom-dropdown {
   width: 240px;
   font-weight: bold;
   position: relative;
   padding: 0;
+}
+.uw-directory .custom-dropdown button:focus, .uw-directory .custom-dropdown button:focus-visible {
+  outline: 2px solid black;
+  box-shadow: none;
 }
 .uw-directory .custom-btn {
   display: flex;
@@ -300,9 +304,6 @@
 .uw-directory .dropdown-menu .dropdown-item:hover {
   background-color: #ece6f0 !important;
 }
-.uw-directory {
-  /* Layout for filter/search boxes */
-}
 .uw-directory .folklore-container {
   display: flex;
   flex-wrap: wrap;
@@ -334,9 +335,6 @@
   flex-grow: 1;
   align-items: flex-end;
   justify-content: flex-start;
-}
-.uw-directory {
-  /* Category button styling */
 }
 .uw-directory .btn {
   margin: 0;
@@ -388,6 +386,10 @@
   border: none;
   font-size: 14px;
 }
+.uw-directory .view-btn:focus, .uw-directory .view-btn:focus-visible {
+  outline: 2px solid black;
+  position: relative;
+}
 .uw-directory .view-btn.active {
   background-color: #4b2e83;
   color: #ffffff;
@@ -429,9 +431,6 @@
   width: 150px;
   height: 48px;
   font-size: 14px;
-}
-.uw-directory {
-  /* Search box styling */
 }
 .uw-directory .searchbox {
   position: relative;
@@ -480,18 +479,12 @@
   box-shadow: none;
   outline: none;
 }
-.uw-directory {
-  /* Directory container */
-}
 .uw-directory #directory-container {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
   justify-content: space-between;
   position: relative;
-}
-.uw-directory {
-  /* grid view */
 }
 .uw-directory .uw-card {
   position: static !important;
@@ -533,9 +526,6 @@
 .uw-directory .uw-card-text span h3 {
   font-size: 24px;
   font-weight: bold;
-}
-.uw-directory {
-  /* Table list view styling */
 }
 .uw-directory .directory-table {
   width: 100%;
