@@ -1,5 +1,4 @@
 jQuery(document).ready(function ($) {
-
  /* ----------  Initialization ---------- */
    const $grid = $("#directory-container").isotope({
     itemSelector: ".uw-card",
@@ -8,6 +7,7 @@ jQuery(document).ready(function ($) {
   });
 
   let currentDeptFilter = "*"; 
+  
  /* ----------  Utility functions ---------- */
 // setEqualCardHeights
 function setEqualCardHeights () {
@@ -178,24 +178,21 @@ function applyFilters() {
   });
 
 
-  $(".custom-dropdown .dropdown-menu").on(
+    $(".custom-dropdown .custom-btn").on(
     "click",
-    ".dropdown-item",
     function (e) {
       e.preventDefault();
-
-      currentDeptFilter = $(this).data("filter");
-      $("#dropdown-label").text($(this).data("value"));
-      hideDropdownOption(currentDeptFilter);
-      applyFilters();
-
-     const dropdownEl = document.getElementById('dropdownMenuButton');
-
-let dd = bootstrap.Dropdown?.getInstance?.(dropdownEl);
-if (!dd) {
-  dd = new bootstrap.Dropdown(dropdownEl);
-}
-dd.hide();  
+      const dropdownMenu = $('.custom-dropdown .dropdown-menu')
+      dropdownMenu.show();
+      $('.dropdown-item').on("click",  function(j){
+          j.preventDefault();        
+          dropdownMenu.hide();  
+          currentDeptFilter = $(this).attr("data-filter");
+          $("#dropdown-label").text($(this).data("value"));
+          hideDropdownOption(currentDeptFilter);
+          applyFilters();
+        }
+      )      
     }
   );
 
@@ -203,7 +200,9 @@ dd.hide();
     $("#searchbar").val("");
     $('.custom-dropdown .dropdown-item[data-filter="*"]').trigger("click");
     updateSearchButtonState();
-
+    $("#results-count").text( 
+      ''
+    )
   });
 
 $(".searchbox").on("submit", function (e) {
@@ -397,6 +396,7 @@ $(document).on("click", ".folklore-modal-close", () =>
   setViewButton("grid");
   hideDropdownOption("*");
   applyFilters();
+   $("#results-count").text('');
 
 
 });      // end ready()

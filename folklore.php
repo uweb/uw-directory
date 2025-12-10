@@ -95,15 +95,15 @@ function uw_directory_enqueue_scripts()
     // Vendor libs
     wp_enqueue_style(
         "bootstrap-css",
-        "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+        "https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
     );
-    wp_enqueue_script(
-        "bootstrap-js",
-        "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js",
-        ["jquery"],
-        null,
-        true
-    );
+    // wp_enqueue_script(
+    //     "bootstrap-js",
+    //     "https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js",
+    //     ["jquery"],
+    //     null,
+    //     true
+    // );
     wp_enqueue_style(
         "bootstrap-icons",
         "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
@@ -131,7 +131,7 @@ function uw_directory_enqueue_scripts()
     wp_enqueue_script(
         "uw-directory-script",
         plugins_url("/script.js", __FILE__),
-        ["jquery", 'bootstrap-js', "isotope-js"],
+        ["jquery",  "isotope-js"],
         null,
         true
     );
