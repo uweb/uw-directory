@@ -94,7 +94,7 @@ function uw_directory_enqueue_scripts()
 {
     $theme = wp_get_theme();
     $parent = wp_get_theme()->parent();
-   if ( 'UW WordPress Theme' == $theme || 'UW WordPress Theme' == $parent) { // load these if not on UW theme
+   if ( 'UW WordPress Theme' !== $theme || 'UW WordPress Theme' !== $parent) { // load these if not on UW theme
     wp_enqueue_style(
         "bootstrap-css",
         "https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
