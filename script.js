@@ -177,32 +177,49 @@ function applyFilters() {
     applyFilters();
   });
 
+const $dropdownMenu = $('.custom-dropdown .dropdown-menu') 
 
     $(".custom-dropdown .custom-btn").on(
-    "click",
-    function (e) {
-      e.preventDefault();
-      const dropdownMenu = $('.custom-dropdown .dropdown-menu')
-      dropdownMenu.show();
-      $('.dropdown-item').on("click",  function(j){
-          j.preventDefault();        
-          dropdownMenu.hide();  
-          currentDeptFilter = $(this).attr("data-filter");
-          $("#dropdown-label").text($(this).data("value"));
-          hideDropdownOption(currentDeptFilter);
-          applyFilters();
-        }
-      )      
-    }
+      "click",
+      function (e) {
+        e.preventDefault();
+         e.stopPropagation();
+        
+    
+      if ($dropdownMenu.is(':visible')) {
+        $dropdownMenu.hide();
+        return;
+      }
+      $dropdownMenu.show();
+      
+        $('.dropdown-item').on("click",  function(j){
+            j.preventDefault();        
+            $dropdownMenu.hide();  
+            currentDeptFilter = $(this).attr("data-filter");
+            $("#dropdown-label").text($(this).data("value"));
+            hideDropdownOption(currentDeptFilter);
+            applyFilters();
+          })      
+      }
   );
+  // Close dropdown when clicking outside
+$(document).on("click", function (e) {
+    const $dropdown = $(".custom-dropdown");
+
+    // If click is NOT inside the dropdown
+    if (!$dropdown.is(e.target) && $dropdown.has(e.target).length === 0) {
+        $($dropdownMenu).hide();
+    }
+    
+});
+
+
 
   $(document).on("click", ".clear-filters", function () {
     $("#searchbar").val("");
     $('.custom-dropdown .dropdown-item[data-filter="*"]').trigger("click");
     updateSearchButtonState();
-    $("#results-count").text( 
-      ''
-    )
+    $("#results-count").text( '' );
   });
 
 $(".searchbox").on("submit", function (e) {
