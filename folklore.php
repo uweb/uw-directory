@@ -1,9 +1,9 @@
 <?php
 /*
-Plugin Name: Folklore Plugin
+Plugin Name: UW Directory Plugin
 Description: Displays UW directory with filtering, searching, and grid/list views.
 Version: 1.0
-Author: UW
+Author: UW Web Strategy Team
 */
 
 if (!defined("ABSPATH")) {
@@ -27,11 +27,13 @@ function register_directory_post_type()
             "all_items" => "All Directory Entries",
             "menu_name" => "Directory",
         ],
+        "exclude_from_search" => true,
         "public" => true,
         "has_archive" => true,
         "menu_icon" => "dashicons-id",
         "supports" => ["title", "editor"],
-        "show_in_rest" => true,
+        "show_in_rest" => false,
+        "show_in_nav_menus" => false,
     ];
 
     register_post_type("directory_entry", $args);
@@ -59,40 +61,20 @@ function uw_register_department_taxonomy()
 }
 
 /**
- * Check to see if ACF Pro, STM, or ACF is active. If ACF not Pro is active, show error. If none are active, show error.
+ * Check to see if ACF or STM is active. If ACF is not active, show error.
  */
 function uw_directory_check_acf()
 {
-    // list of acceptable plugins to get ACF Pro
-    $all_plugins = [
-        "advanced-custom-fields-pro/acf.php",
-        "uw-storytelling-modules/class-uw-storytelling-modules.php",
-        "uw-storytelling-modules-master/class-uw-storytelling-modules.php",
-        "uw-storytelling-modules-develop/class-uw-storytelling-modules.php",
-        "uw-storytelling-modules-main/class-uw-storytelling-modules.php", // this one may exist in the future if we change from master to main.
-    ];
 
-    if (is_plugin_active("advanced-custom-fields/acf.php")) { ?>
-				<div class="notice notice-error">
-					<p><?php esc_html_e(
-         "UW Folklore requires Advanced Custom Fields Pro or UW Storytelling Modules. It looks like you're using Advanced Custom Fields (not pro). Please deactivate Advanced Custom Fields and activate Advanced Custom Fields Pro or Storytelling Modules instead.",
-         "uw-directory"
-     ); ?></p>
-				</div>
-				<?php return;}
 
-    foreach ($all_plugins as $plugin) {
-        // if any of these plugins are active, then we are all set.
-        if (is_plugin_active($plugin)) {
-            // all good to go!
+    if ( class_exists('acf') ) {
             return;
         }
-    }
-    // if we get here, we're out of checks and need either ACF Pro or STM activated.
+    // if we get here, we're out of checks and need either ACF or STM activated.
     ?>
 				<div class="notice notice-error">
 					<p><?php esc_html_e(
-         "UW Folklore requires Advanced Custom Fields Pro or UW Storytelling Modules. Please activate Advanced Custom Fields Pro or UW Storytelling Modules.",
+         "UW Folklore requires Advanced Custom Fields or UW Storytelling Modules. Please activate Advanced Custom Fields or UW Storytelling Modules.",
          "uw-directory"
      ); ?></p>
 				</div>
@@ -100,6 +82,7 @@ function uw_directory_check_acf()
 }
 
 add_action("init", "register_directory_post_type");
+
 // save and load acf json for this plugin.
 add_filter(
     "acf/settings/save_json/key=group_67ae559c84ef4",
@@ -109,18 +92,21 @@ add_filter("acf/settings/load_json", "uw_directory_acf_json_load_point");
 
 function uw_directory_enqueue_scripts()
 {
-    // Vendor libs
+    $theme = wp_get_theme();
+    $parent = wp_get_theme()->parent();
+   if ( 'UW WordPress Theme' !== $theme || 'UW WordPress Theme' !== $parent) { // load these if not on UW theme
     wp_enqueue_style(
         "bootstrap-css",
-        "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+        "https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
     );
     wp_enqueue_script(
         "bootstrap-js",
-        "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js",
+        "https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js",
         ["jquery"],
         null,
         true
-    );
+        );
+    }
     wp_enqueue_style(
         "bootstrap-icons",
         "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
@@ -148,7 +134,7 @@ function uw_directory_enqueue_scripts()
     wp_enqueue_script(
         "uw-directory-script",
         plugins_url("/script.js", __FILE__),
-        ["jquery", 'bootstrap-js', "isotope-js"],
+        ["jquery",  "isotope-js"],
         null,
         true
     );
@@ -341,8 +327,9 @@ function uw_directory_shortcode()
                      data-name="<?php echo esc_attr("$first $last"); ?>"
                      
                      data-email="<?php echo esc_attr($email); ?>"
-                     data-department="<?php echo esc_attr($d_slug); ?>">
-                     <img src="<?php echo $img_url; ?>" alt="Profile Image" class="uw-card-img"/>
+                     data-department="<?php echo esc_attr($d_slug); ?>"
+                     data-title="<?php echo esc_attr($title); ?>">
+                     <img src="<?php echo $img_url; ?>" alt="Profile Image of <?php echo esc_attr("$first $last"); ?>" class="uw-card-img"/>
                     <div class="uw-card-text"><span>
                      <h2 class="h2"><?php echo esc_html(
                             "$first $last"
@@ -437,7 +424,7 @@ echo "</div></div>";
     <button type="button" class="folklore-modal-close" aria-label="Close">&times;</button>
     <div class="folklore-modal-body">
       <div class="folklore-modal-left">
-        <img id="modal-img" src="" alt="Profile Image" class="modal-photo" />
+        <img id="modal-img" src="" alt="Profile Image of" class="modal-photo" />
         <div class="modal-contact horizontal-modal-footer" aria-hidden="false">
 
   <h3 class="h3">Connect</h3>

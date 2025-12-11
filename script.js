@@ -1,5 +1,4 @@
 jQuery(document).ready(function ($) {
-
  /* ----------  Initialization ---------- */
    const $grid = $("#directory-container").isotope({
     itemSelector: ".uw-card",
@@ -8,6 +7,7 @@ jQuery(document).ready(function ($) {
   });
 
   let currentDeptFilter = "*"; 
+  
  /* ----------  Utility functions ---------- */
 // setEqualCardHeights
 function setEqualCardHeights () {
@@ -125,10 +125,12 @@ function applyFilters() {
       const name = $(this).data("name")?.toLowerCase() || "";
       const email = $(this).data("email")?.toLowerCase() || "";
       const dept = $(this).data("department")?.toLowerCase() || "";
+      const role = $(this).data("title")?.toLowerCase() || "";
 
       const searchMatch =
         name.includes(searchText) ||
         email.includes(searchText) ||
+        role.includes(searchText) ||
         dept.includes(searchText);
       $(this).toggle(deptMatch && searchMatch);
     });
@@ -143,10 +145,12 @@ function applyFilters() {
         const name = $(this).data("name")?.toLowerCase() || "";
         const email = $(this).data("email")?.toLowerCase() || "";
         const dept = $(this).data("department")?.toLowerCase() || "";
+        const role = $(this).data("title")?.toLowerCase() || "";
 
         const searchMatch =
           name.includes(searchText) ||
           email.includes(searchText) ||
+          role.includes(searchText) ||
           dept.includes(searchText);
         return cardDeptMatch && searchMatch;
       },
@@ -173,33 +177,49 @@ function applyFilters() {
     applyFilters();
   });
 
+const $dropdownMenu = $('.custom-dropdown .dropdown-menu') 
 
-  $(".custom-dropdown .dropdown-menu").on(
-    "click",
-    ".dropdown-item",
-    function (e) {
-      e.preventDefault();
-
-      currentDeptFilter = $(this).data("filter");
-      $("#dropdown-label").text($(this).data("value"));
-      hideDropdownOption(currentDeptFilter);
-      applyFilters();
-
-     const dropdownEl = document.getElementById('dropdownMenuButton');
-
-let dd = bootstrap.Dropdown?.getInstance?.(dropdownEl);
-if (!dd) {
-  dd = new bootstrap.Dropdown(dropdownEl);
-}
-dd.hide();  
-    }
+    $(".custom-dropdown .custom-btn").on(
+      "click",
+      function (e) {
+        e.preventDefault();
+         e.stopPropagation();
+        
+    
+      if ($dropdownMenu.is(':visible')) {
+        $dropdownMenu.hide();
+        return;
+      }
+      $dropdownMenu.show();
+      
+        $('.dropdown-item').on("click",  function(j){
+            j.preventDefault();        
+            $dropdownMenu.hide();  
+            currentDeptFilter = $(this).attr("data-filter");
+            $("#dropdown-label").text($(this).data("value"));
+            hideDropdownOption(currentDeptFilter);
+            applyFilters();
+          })      
+      }
   );
+  // Close dropdown when clicking outside
+$(document).on("click", function (e) {
+    const $dropdown = $(".custom-dropdown");
+
+    // If click is NOT inside the dropdown
+    if (!$dropdown.is(e.target) && $dropdown.has(e.target).length === 0) {
+        $($dropdownMenu).hide();
+    }
+    
+});
+
+
 
   $(document).on("click", ".clear-filters", function () {
     $("#searchbar").val("");
     $('.custom-dropdown .dropdown-item[data-filter="*"]').trigger("click");
     updateSearchButtonState();
-
+    $("#results-count").text( '' );
   });
 
 $(".searchbox").on("submit", function (e) {
@@ -262,6 +282,7 @@ $(".searchbox").on("submit", function (e) {
     $("#modal-department").text(department);
     $("#modal-bio").html(bio);
     $("#modal-img").attr("src", img);
+    $("#modal-img").attr("alt", `Profile image of ${name}`);
 
     $(".modal-email").attr("href", `mailto:${email}`);
     $(".modal-email .email-text").text(email || "Email");
@@ -392,6 +413,7 @@ $(document).on("click", ".folklore-modal-close", () =>
   setViewButton("grid");
   hideDropdownOption("*");
   applyFilters();
+   $("#results-count").text('');
 
 
 });      // end ready()

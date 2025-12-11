@@ -203,6 +203,10 @@
   position: relative;
   padding: 0;
 }
+.uw-directory .custom-dropdown button:focus, .uw-directory .custom-dropdown button:focus-visible {
+  outline: 2px solid black;
+  box-shadow: none;
+}
 .uw-directory .custom-btn {
   display: flex;
   align-items: center;
@@ -255,6 +259,7 @@
   border-radius: 0;
   margin-top: 0;
   width: 100%;
+  margin-left: 0;
   min-width: 240px;
   border: 1px solid #ccc;
   box-shadow: none;
@@ -382,6 +387,10 @@
   border: none;
   font-size: 14px;
 }
+.uw-directory .view-btn:focus, .uw-directory .view-btn:focus-visible {
+  outline: 2px solid black;
+  position: relative;
+}
 .uw-directory .view-btn.active {
   background-color: #4b2e83;
   color: #ffffff;
@@ -442,7 +451,7 @@
 }
 .uw-directory .searchbox #searchbar:focus {
   outline: none;
-  border: 1px solid #e8e3d3;
+  border: 2px solid black;
   box-shadow: none;
 }
 .uw-directory .searchbox #searchsubmit.clicked {
