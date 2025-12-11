@@ -92,18 +92,21 @@ add_filter("acf/settings/load_json", "uw_directory_acf_json_load_point");
 
 function uw_directory_enqueue_scripts()
 {
-    // Vendor libs
+    $theme = wp_get_theme();
+    $parent = wp_get_theme()->parent();
+   if ( 'UW WordPress Theme' == $theme || 'UW WordPress Theme' == $parent) { // load these if not on UW theme
     wp_enqueue_style(
         "bootstrap-css",
         "https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
     );
-    // wp_enqueue_script(
-    //     "bootstrap-js",
-    //     "https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js",
-    //     ["jquery"],
-    //     null,
-    //     true
-    // );
+    wp_enqueue_script(
+        "bootstrap-js",
+        "https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js",
+        ["jquery"],
+        null,
+        true
+        );
+    }
     wp_enqueue_style(
         "bootstrap-icons",
         "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
