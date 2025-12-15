@@ -28,7 +28,7 @@ Plugin to displays a searchable, filterable directory of people with grid/list v
 
 1. **Upload the Plugin**
    - Upload the plugin folder to:  
-     `/wp-content/plugins/folklore-plugin/`
+     `/wp-content/plugins/uw-directory/`
 
 2. **Activate the Plugin**
    - In your WordPress admin dashboard, go to **Plugins** and activate **Folklore Plugin**.
@@ -83,6 +83,7 @@ Plugin to displays a searchable, filterable directory of people with grid/list v
 
 - The plugin includes accessibility and responsive design features, but you should still test it against your theme.
 - Keep bios under **1000 characters**, including spaces to prevent layout issues.
+
 
 
 
