@@ -30,11 +30,11 @@ Plugin to displays a searchable, filterable directory of people with grid/list v
    - Upload the plugin folder to:  
      `/wp-content/plugins/uw-directory/`
 
-2. **Activate the Plugin**
-   - In your WordPress admin dashboard, go to **Plugins** and activate **Folklore Plugin**.
-
-3. **Install Required Plugins**
+2. **Install Required Plugins**
    - Make sure **UW Storytelling Modules** *or* **Advanced Custom Fields (ACF)** is active for custom field functionality.
+  
+3. **Activate the Plugin**
+   - In your WordPress admin dashboard, go to **Plugins** and activate **UW Directory Plugin**.
 
 
 
@@ -84,6 +84,7 @@ Plugin to displays a searchable, filterable directory of people with grid/list v
 - The plugin includes accessibility and responsive design features, but you should still test it against your theme.
 - Keep bios under **1000 characters**, including spaces to prevent layout issues.
 - The Pro version of ACF is not required for this plugin.
+
 
 
 
