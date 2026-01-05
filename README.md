@@ -1,4 +1,4 @@
-﻿# Folklore Plugin
+﻿# UW Directory (AKA Folklore) Plugin
 
 Plugin to displays a searchable, filterable directory of people with grid/list views and profile modals.
 
@@ -34,7 +34,7 @@ Plugin to displays a searchable, filterable directory of people with grid/list v
    - In your WordPress admin dashboard, go to **Plugins** and activate **Folklore Plugin**.
 
 3. **Install Required Plugins**
-   - Make sure **UW Storytelling Modules** *or* **Advanced Custom Fields Pro (ACF Pro)** is active for custom field functionality.
+   - Make sure **UW Storytelling Modules** *or* **Advanced Custom Fields (ACF)** is active for custom field functionality.
 
 
 
@@ -42,7 +42,7 @@ Plugin to displays a searchable, filterable directory of people with grid/list v
 
 1. **Assign Departments**
    - Use the **Departments** taxonomy to organize entries.
-   - Add departments via ACF Pro in WP dashboard.
+   - Add departments via ACF in WP dashboard.
 
 2. **Add Directory Entries**
    - Go to **Directory > Add New Entry** in the WordPress admin.
@@ -64,7 +64,7 @@ Plugin to displays a searchable, filterable directory of people with grid/list v
 ## Developer Customization
 
 - **Fields:**  
-  Extend or modify fields via ACF Pro using the field group `group_67ae559c84ef4`.
+  Extend or modify fields via ACF using the field group `group_67ae559c84ef4`.
 
 - **Styling:**  
  Modify `folklore.scss` to change the look and feel, or enqueue your own stylesheet to override the defaults. After editing the styles, run `npx gulp` to rebuild the CSS before refreshing the browser.
@@ -83,6 +83,8 @@ Plugin to displays a searchable, filterable directory of people with grid/list v
 
 - The plugin includes accessibility and responsive design features, but you should still test it against your theme.
 - Keep bios under **1000 characters**, including spaces to prevent layout issues.
+- The Pro version of ACF is not required for this plugin.
+
 
 
 
