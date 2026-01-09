@@ -90,36 +90,22 @@ add_filter(
 );
 add_filter("acf/settings/load_json", "uw_directory_acf_json_load_point");
 
-function uw_directory_enqueue_scripts()
+
+function uw_directory_register_scripts()
 {
-    $theme = wp_get_theme();
-    $parent = wp_get_theme()->parent();
-   if ( 'UW WordPress Theme' !== $theme || 'UW WordPress Theme' !== $parent) { // load these if not on UW theme
-    wp_enqueue_style(
-        "bootstrap-css",
-        "https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
-    );
-    wp_enqueue_script(
-        "bootstrap-js",
-        "https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js",
-        ["jquery"],
-        null,
-        true
-        );
-    }
-    wp_enqueue_style(
+    wp_register_style(
         "bootstrap-icons",
         "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
     );
 
-    wp_enqueue_script(
+    wp_register_script(
         "isotope-js",
         "https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js",
         ["jquery"],
         null,
         true
     );
-    wp_enqueue_style(
+    wp_register_style(
         "font-awesome",
         "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css",
         [],
@@ -127,11 +113,11 @@ function uw_directory_enqueue_scripts()
     );
 
     // Plugin assets
-    wp_enqueue_style(
+    wp_register_style(
         "uw-directory-style",
         plugins_url("folklore.css", __FILE__)
     );
-    wp_enqueue_script(
+    wp_register_script(
         "uw-directory-script",
         plugins_url("/script.js", __FILE__),
         ["jquery",  "isotope-js"],
@@ -139,7 +125,7 @@ function uw_directory_enqueue_scripts()
         true
     );
 }
-add_action("wp_enqueue_scripts", "uw_directory_enqueue_scripts");
+add_action("wp_enqueue_scripts", "uw_directory_register_scripts");
 
 /**
  * Use Local JSON to store data for ACF.
@@ -172,6 +158,14 @@ function uw_directory_acf_json_load_point($paths)
 
 function uw_directory_shortcode()
 {
+    wp_enqueue_style( "bootstrap-icons" );
+    wp_enqueue_script( "isotope-js" );
+    wp_enqueue_style( "font-awesome" );
+
+    // Plugin assets
+    wp_enqueue_style( "uw-directory-style" );
+    wp_enqueue_script( "uw-directory-script" );
+
     $post_id = get_queried_object_id();
     $sidebar_val = get_post_meta($post_id, "sidebar", true);
     $has_sidebar = empty($sidebar_val);
@@ -191,7 +185,7 @@ function uw_directory_shortcode()
 <div class="folklore-box">
 <div class="folklore-inner">
 <p class="section-label" for="dropdownMenuButton">
-  Categories filter  <br><small>Select from the dropdown</small>
+  Team filter  <br><small>Select from the dropdown</small>
 
 </p>
 
@@ -212,12 +206,12 @@ function uw_directory_shortcode()
 
     <div class="dropdown custom-dropdown">
       <button id="dropdownMenuButton" class="custom-btn" data-bs-toggle="dropdown" aria-expanded="false">
-        <span id="dropdown-label" class="label-text">All categories</span>
+        <span id="dropdown-label" class="label-text">All teams</span>
         <span class="arrow-block">&#9660;</span>
       </button>
       <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
       <li>
-        <a class="dropdown-item" href="#" data-value="All categories" data-filter="*">All categories</a>
+        <a class="dropdown-item" href="#" data-value="All categories" data-filter="*">All teams</a>
       </li>
       <?php foreach ($departments as $slug => $name): ?>
   <li><a class="dropdown-item" href="#" data-value="<?php echo esc_attr($name); ?>" data-filter=".<?php echo esc_attr($slug); ?>"><?php echo esc_html($name); ?></a></li>
@@ -285,9 +279,9 @@ function uw_directory_shortcode()
         $query = new WP_Query([
             "post_type" => "directory_entry",
             "posts_per_page" => -1,
-            "meta_key" => "last_name",       
-            "orderby" => "meta_value",        
-            "order" => "ASC",                 
+            "meta_key" => "last_name",
+            "orderby" => "meta_value",
+            "order" => "ASC",
         ]);
         $table_rows = "";
 
@@ -314,7 +308,7 @@ function uw_directory_shortcode()
 
                 $title = get_field("title");
                 $bio = get_field("bio");
-                
+
                 $img_url =
                     $pic && !empty($pic["url"])
                         ? esc_url($pic["url"])
@@ -325,7 +319,7 @@ function uw_directory_shortcode()
                 ?>
                 <div class="uw-card <?php echo esc_attr($d_slug); ?>"
                      data-name="<?php echo esc_attr("$first $last"); ?>"
-                     
+
                      data-email="<?php echo esc_attr($email); ?>"
                      data-department="<?php echo esc_attr($d_slug); ?>"
                      data-title="<?php echo esc_attr($title); ?>">
@@ -335,11 +329,11 @@ function uw_directory_shortcode()
                             "$first $last"
                         ); ?></h2>
                         <div class="udub-slant-divider white"><span></span></div>
-                        
+
                        <p class="title"><?php echo esc_html(
                             $title
                         ); ?></p>
-                 
+
                         <p class="department"><?php echo esc_html(
                             $dept
                         ); ?></p>
@@ -359,7 +353,7 @@ function uw_directory_shortcode()
                                      data-website="<?php echo esc_attr($website); ?>"
                                       data-pronouns="<?php echo esc_attr($pronouns); ?>"
         data-linkedin="<?php echo esc_attr($linkedin); ?>"
-                                     
+
                                      <?php
 
 $bio_html =  esc_attr( $bio );
@@ -373,7 +367,7 @@ data-bio="<?php echo esc_attr( $bio_html ); ?>"  data-img="<?php echo $img_url; 
                 <?php /* ----- List View  ----- */
                 $email_html = $email
                   ? '<a href="mailto:' . esc_attr( $email ) . '">' . esc_html( $email ) . '</a>'
-                  : '';   
+                  : '';
 $table_rows .= '<tr class="open-profile-modal" role="button" tabindex="0" aria-label="View ' . esc_attr("$first $last") . '’s profile"'
     . ' data-name="' . esc_attr("$first $last") . '"'
     . ' data-title="' . esc_attr($title) . '"'
@@ -389,7 +383,7 @@ $table_rows .= '<tr class="open-profile-modal" role="button" tabindex="0" aria-l
     . '<td><strong>' . esc_html("$first $last") . '</strong></td>'
     . '<td>' . esc_html($title) . '</td>'
     . '<td>' . esc_html($dept) . '</td>'
-    . '<td>' . $email_html        . '</td>'  
+    . '<td>' . $email_html        . '</td>'
     . '</tr>';
 endwhile;
 wp_reset_postdata();
@@ -418,7 +412,7 @@ echo "</div></div>";
 </div>
 
 
-        <!-- Bio modal -->     
+        <!-- Bio modal -->
 <div id="profile-modal" class="uw-modal"style="display: none;"  tabindex="-1" >
   <div class="folklore-modal-content">
     <button type="button" class="folklore-modal-close" aria-label="Close">&times;</button>
@@ -470,7 +464,7 @@ echo "</div></div>";
             </a>
         </div>
     <?php endif; ?>
-    
+
     <?php if (!empty($linkedin)) : ?>
         <div class="contact-item">
             <i class="fa-brands fa-linkedin"></i>
@@ -479,7 +473,7 @@ echo "</div></div>";
             </a>
         </div>
     <?php endif; ?>
-    
+
     <?php if (!empty($website)) : ?>
         <div class="contact-item">
             <i class="fa-solid fa-globe"></i>
