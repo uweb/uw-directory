@@ -68,25 +68,6 @@
             "append": ""
         },
         {
-            "key": "field_67ae55c1cb637",
-            "label": "Email",
-            "name": "email",
-            "aria-label": "",
-            "type": "email",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "placeholder": "",
-            "prepend": "",
-            "append": ""
-        },
-        {
             "key": "field_67b666e513e1a",
             "label": "Title",
             "name": "title",
@@ -133,9 +114,65 @@
             "bidirectional_target": []
         },
         {
+            "key": "field_67ae55c1cb637",
+            "label": "Email",
+            "name": "email",
+            "aria-label": "",
+            "type": "email",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_685c1e4c1f9e5",
+            "label": "Pronouns",
+            "name": "pronouns",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
             "key": "field_67b6675fe3297",
             "label": "Website",
             "name": "website",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": ""
+        },
+        {
+            "key": "field_6864f62fd3b3b",
+            "label": "linkedin",
+            "name": "linkedin",
             "aria-label": "",
             "type": "url",
             "instructions": "",
@@ -154,8 +191,8 @@
             "label": "Bio",
             "name": "bio",
             "aria-label": "",
-            "type": "textarea",
-            "instructions": "",
+            "type": "wysiwyg",
+            "instructions": "Max 1000 characters including spaces.",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -164,10 +201,10 @@
                 "id": ""
             },
             "default_value": "",
-            "maxlength": "",
-            "rows": "",
-            "placeholder": "",
-            "new_lines": ""
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 1,
+            "delay": 0
         }
     ],
     "location": [
@@ -190,5 +227,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1767903614
+    "modified": 1769029309
 }
