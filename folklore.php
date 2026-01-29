@@ -2,7 +2,7 @@
 /*
 Plugin Name: UW Directory Plugin
 Description: Displays UW directory with filtering, searching, and grid/list views.
-Version: 1.0
+Version: 1.1
 Author: UW Web Strategy Team
 */
 
