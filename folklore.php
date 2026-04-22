@@ -394,9 +394,9 @@ echo "</div></div>";
 
 <div id="tab-two" class="tab-content" style="display:none;">
     <div id="directory-table-wrapper" class="table-responsive-sm">
-        <label class="section-label table-instruction">Click a row to view the full profile</label>
+        <!-- <label class="section-label table-instruction">Click a row to view the full profile</label> -->
         <table class="directory-table">
-            <caption class="screen-reader-text">Click a row to view the full profile</caption>
+            <caption>Click a row to view the full profile</caption>
             <thead class="table-headers">
                 <tr role="button">
                     <td></td>
