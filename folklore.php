@@ -399,7 +399,7 @@ echo "</div></div>";
             <caption class="screen-reader-text">Click a row to view the full profile</caption>
             <thead class="table-headers">
                 <tr role="button">
-                    <th></th>
+                    <td></td>
                     <th scope="col">Name</th>
                     <th scope="col">Role</th>
                     <th scope="col">Department</th>

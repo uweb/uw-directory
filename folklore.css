@@ -542,6 +542,10 @@
   padding: 14px 16px;
   font-size: 16px;
 }
+.uw-directory .directory-table .table-headers td {
+  height: unset;
+  background: #4b2e83;
+}
 .uw-directory .directory-table td {
   height: 132px;
   padding: 14px 16px;
