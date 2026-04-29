@@ -232,7 +232,7 @@ function uw_directory_shortcode()
   <form class="searchbox">
     <div>
         <input type="text" id="searchbar" placeholder="Search for name, team, role" autocomplete="off" />
-        <button type="submit" id="searchsubmit" disabled></button>
+        <button type="submit" id="searchsubmit" disabled>Search</button>
     </div>
 </form>
 

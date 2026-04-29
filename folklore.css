@@ -467,6 +467,7 @@
   border: none;
   background: url("./svg/search.svg") no-repeat center center #4b2e83;
   background-size: 22px;
+  text-indent: -9999px;
 }
 .uw-directory .searchbox #searchsubmit:disabled {
   cursor: default;
