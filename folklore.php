@@ -52,7 +52,7 @@ function uw_register_department_taxonomy()
             ],
             "hierarchical" => true,
             "show_ui" => true,
-            "meta_box_cb" => false,
+            "meta_box_cb" => "post_tags_meta_box",
             "show_admin_column" => true,
             "show_in_rest" => true,
             "rewrite" => ["slug" => "department"],
@@ -126,6 +126,12 @@ function uw_directory_register_scripts()
     );
 }
 add_action("wp_enqueue_scripts", "uw_directory_register_scripts");
+
+
+function uw_directory_enqueue_custom_admin_style() {
+    wp_enqueue_style( 'uw-directory-admin-css', plugins_url( '/admin-style.css', __FILE__), false, '1.0.0' );
+}
+add_action( 'admin_enqueue_scripts', 'uw_directory_enqueue_custom_admin_style' );
 
 /**
  * Use Local JSON to store data for ACF.
