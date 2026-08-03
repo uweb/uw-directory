@@ -103,8 +103,8 @@
             },
             "taxonomy": "department",
             "add_term": 1,
-            "save_terms": 0,
-            "load_terms": 0,
+            "save_terms": 1,
+            "load_terms": 1,
             "return_format": "id",
             "field_type": "select",
             "allow_null": 0,
@@ -227,5 +227,8 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1769029309
+    "display_title": "",
+    "allow_ai_access": false,
+    "ai_description": "",
+    "modified": 1785774961
 }
