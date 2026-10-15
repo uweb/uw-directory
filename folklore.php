@@ -129,7 +129,7 @@ function uw_directory_register_scripts()
     // Plugin assets
     wp_register_style(
         "uw-directory-style",
-        plugins_url("folklore.css", __FILE__)
+        plugins_url("folklore.css", __FILE__), array(), UW_DIRECTORY_VERSION
     );
     wp_register_script(
         "uw-directory-script",
