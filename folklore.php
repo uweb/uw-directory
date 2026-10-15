@@ -1,13 +1,27 @@
 <?php
 /*
-Plugin Name: UW Directory Plugin
-Description: Displays UW directory with filtering, searching, and grid/list views.
-Version: 1.1.1
-Author: UW Web Strategy Team
-*/
+ * @uw-directory
+ * Plugin Name:       UW Directory Plugin
+ * Description:       Displays UW directory with filtering, searching, and grid/list views.
+ * Plugin URI:        https://github.com/uweb/uw-directory
+ * Update URI:        https://github.com/uweb/uw-directory
+ * GitHub Plugin URI: https://github.com/uweb/uw-directory
+ * Primary Branch:    main
+ * Version:           1.1.2
+ * Requires at least: 4.9.10
+ * Requires PHP:      7.4
+ * Author:            UW Web Strategy Team
+ * Author URI:        http://www.washington.edu/webstrategy/
+ */
 
 if (!defined("ABSPATH")) {
     exit();
+}
+
+// set the version number so we can use it in the enqueues for cache busting. Make sure it matches the Version header.
+// Make sure to update in package.json, too!
+if ( ! defined( 'UW_DIRECTORY_VERSION' ) ) {
+    define( 'UW_DIRECTORY_VERSION', '1.1.2' );
 }
 
 function register_directory_post_type()
@@ -115,13 +129,13 @@ function uw_directory_register_scripts()
     // Plugin assets
     wp_register_style(
         "uw-directory-style",
-        plugins_url("folklore.css", __FILE__)
+        plugins_url("folklore.css", __FILE__), array(), UW_DIRECTORY_VERSION
     );
     wp_register_script(
         "uw-directory-script",
         plugins_url("/script.js", __FILE__),
         ["jquery",  "isotope-js"],
-        null,
+        UW_DIRECTORY_VERSION,
         true
     );
 }
@@ -129,7 +143,7 @@ add_action("wp_enqueue_scripts", "uw_directory_register_scripts");
 
 
 function uw_directory_enqueue_custom_admin_style() {
-    wp_enqueue_style( 'uw-directory-admin-css', plugins_url( '/admin-style.css', __FILE__), false, '1.0.0' );
+    wp_enqueue_style( 'uw-directory-admin-css', plugins_url( '/admin-style.css', __FILE__), false, UW_DIRECTORY_VERSION );
 }
 add_action( 'admin_enqueue_scripts', 'uw_directory_enqueue_custom_admin_style' );
 
