@@ -1,6 +1,6 @@
 {
   "name": "folklore",
-  "version": "1.0.0",
+  "version": "1.1.2",
   "description": "This is a custom WordPress plugin that displays the University of Washington directory using a searchable and filterable interface.",
   "main": "script.js",
   "scripts": {
